@@ -38,12 +38,9 @@ class Bid(models.Model):
     def __str__(self):
         return f"Bid {self.id} on {self.item}"
 
-#TODO:
-# class Comment(models.Model):
-#     # content = models.TextField()
-#     # user = pass
-#     # created_time = pass
-#     # edited_time = pass
-#     pass
-
+class Comment(models.Model):
+    item = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listing_comments")
+    content = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="comments_posted")
+    posted_date = models.DateTimeField(default=timezone.now)
 
