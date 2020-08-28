@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
 
+
 class User(AbstractUser):
     watchlist = models.ForeignKey(
         "Listing",
@@ -14,7 +15,7 @@ class Category(models.Model):
     name = models.CharField(max_length=32)
 
     def __str__(self):
-        return f"{self.name}"
+        return self.name
 
 class Listing(models.Model):
     title = models.CharField(max_length=128)
@@ -22,24 +23,22 @@ class Listing(models.Model):
     start_price = models.DecimalField(max_digits=12, decimal_places=2)
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name="seller")
     start_date = models.DateTimeField(default=timezone.now)
-    category = models.ForeignKey(
-        Category, 
-        models.SET_NULL,
-        blank=True, 
-        null=True, 
-        related_name="items"
-    )
+    category = models.ManyToManyField(Category, blank=True, related_name="items")
     #TODO: end_date
 
     def __str__(self):
-        return f"{self.title}"
+        return self.title
+
+class Bid(models.Model):
+    item = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bids_offered")
+    bidder = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="bids_placed")
+    price = models.DecimalField(max_digits=12, decimal_places=2)
+    time = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Bid {self.id} on {self.item}"
 
 #TODO:
-# class Bid(models.Model):
-#     item = models.ManyToOneRel(Listing, related_name="item")
-#     price = models.DecimalField(max_digits=12, decimal_places=2)
-#     time = models.DateTimeField(default=timezone.now)
-
 # class Comment(models.Model):
 #     # content = models.TextField()
 #     # user = pass
