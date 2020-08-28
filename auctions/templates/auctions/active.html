@@ -1,0 +1,28 @@
+{% extends "auctions/layout-listing.html" %}
+{% load static %}
+
+{% block body %}
+<div class="container-fluid padding">
+    <div class="row padding">
+        <div class="row col-12">
+            {% for item in listings  %}
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <div class="card-deck">
+                    <div class="card">
+                        <a href="#" class="stretched-link">
+                            <img src="{% static 'auctions/images/sample.jpg' %}" class="card-img-top" alt="Image"></a>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.title }}</h5>
+                            <p class="card-text">{{ item.description }}</p>
+                            <div class="card-text"><small class="text-muted">Created on {{ item.start_date }}</small></div>
+                            <div class="card-text"><small class="text-muted">By {{ item.seller }}</small></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+    
+{% endblock %}
