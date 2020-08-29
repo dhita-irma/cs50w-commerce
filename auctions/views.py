@@ -83,7 +83,12 @@ def category_view(request, category):
 
 def categories_index(request):
     categories = Category.objects.all()
-    return render(request, "auctions/categories_index.html", {
+    return render(request, "auctions/categories-index.html", {
         "categories": categories
     })
 
+def create_listing(request):
+    if request.method == "POST":
+        pass
+    else:
+        return render(request, "auctions/create-listing.html")

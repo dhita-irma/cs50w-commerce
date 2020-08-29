@@ -4,12 +4,7 @@ from django.utils import timezone
 
 
 class User(AbstractUser):
-    watchlist = models.ForeignKey(
-        "Listing",
-        models.SET_NULL,
-        blank=True,
-        null=True,
-    )
+    watchlist = models.ForeignKey("Listing", models.SET_NULL, blank=True, null=True)
 
 class Category(models.Model):
     name = models.CharField(max_length=32)
