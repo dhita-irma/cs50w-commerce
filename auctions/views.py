@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+from .forms import ListingForm
 from .models import *
 
 
@@ -91,4 +92,6 @@ def create_listing(request):
     if request.method == "POST":
         pass
     else:
-        return render(request, "auctions/create-listing.html")
+        return render(request, "auctions/create.html", {
+            "form": ListingForm()
+        })
