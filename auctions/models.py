@@ -17,9 +17,9 @@ class Listing(models.Model):
     description = models.TextField()
     start_price = models.DecimalField(max_digits=12, decimal_places=2)
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name="seller")
-    start_date = models.DateTimeField(default=timezone.now)
     category = models.ManyToManyField(Category, blank=True, related_name="items")
-    #TODO: end_date
+    created_date = models.DateTimeField(default=timezone.now)
+    image_url = models.URLField(blank=True)
 
     def __str__(self):
         return self.title

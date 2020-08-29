@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=128)),
                 ('description', models.TextField()),
                 ('start_price', models.DecimalField(decimal_places=2, max_digits=12)),
-                ('start_date', models.DateTimeField(default=django.utils.timezone.now)),
+                ('created_date', models.DateTimeField(default=django.utils.timezone.now)),
                 ('seller', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='seller', to=settings.AUTH_USER_MODEL)),
             ],
         ),
