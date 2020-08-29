@@ -64,3 +64,26 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+def listing_item(request, listing_id):
+    listing = Listing.objects.get(pk=listing_id)
+    return render(request, "auctions/listing.html", {
+        "listing": listing
+    })
+
+def category_view(request, category):
+    try:
+        category = Category.objects.get(name=category)
+        category_id = category.id
+        filtered_listings = Listing.objects.filter(category=category_id)
+        return render(request, "auctions/category.html", {
+            "filtered_listings": filtered_listings
+        })     
+    except:
+        return render(request, "auctions/error.html")
+
+def categories_index(request):
+    categories = Category.objects.all()
+    return render(request, "auctions/categories_index.html", {
+        "categories": categories
+    })
+

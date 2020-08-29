@@ -1,11 +1,11 @@
-{% extends "auctions/layout-listing.html" %}
+{% extends 'auctions/layout-listing.html' %}
 {% load static %}
 
 {% block body %}
 <div class="container-fluid padding">
     <div class="row padding">
         <div class="row col-12">
-            {% for listing in listings  %}
+            {% for listing in filtered_listings  %}
             <div class="col-sm-12 col-md-6 col-lg-3">
                 <div class="card-deck">
                     <div class="card">
@@ -24,5 +24,4 @@
         </div>
     </div>
 </div>
-    
-{% endblock %}
+{% endblock body %}
