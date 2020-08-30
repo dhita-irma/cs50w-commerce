@@ -1,9 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+
 from django.views.generic import(
     ListView, 
     DetailView, 
@@ -17,17 +20,22 @@ from .models import *
 class ActiveListingView(ListView):
     model = Listing
     context_object_name = 'listings' 
-    ordering = ['-created_date'] #Order from latest to oldest
+
+    # Order listings from latest to oldest
+    ordering = ['-created_date'] 
 
 
 class ListingDetailView(DetailView):
     model = Listing
 
 
-class ListingCreateView(CreateView):
+class ListingCreateView(LoginRequiredMixin, CreateView):
     model = Listing
     form_class = forms.ListingForm
+    login_url = '/login/'
+    # TODO: redirect user back to /listing/new/ after login
 
+    # Set listing's seller to current logged-in user 
     def form_valid(self, form):
         form.instance.seller = self.request.user
         return super().form_valid(form) 
@@ -100,18 +108,3 @@ def categories_index(request):
     return render(request, "auctions/categories-index.html", {
         "categories": categories
     })
-
-# @login_required(login_url="/login")
-# def create_listing(request):
-#     if request.method == "POST":
-#         form = forms.ListingForm(request.POST)
-#         if form.is_valid():
-#             new_listing = form.save(commit=False)
-#             new_listing.seller = request.user
-#             new_listing.save()
-#             return redirect(reverse("listing", args=[new_listing.id]))
-#         return HttpResponse("Form is not valid")
-#     else:
-#         return render(request, "auctions/listing_form.html", {
-#             "form": forms.ListingForm()
-#         })
