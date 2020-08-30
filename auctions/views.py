@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -11,6 +11,8 @@ from django.views.generic import(
     ListView, 
     DetailView, 
     CreateView,
+    UpdateView,
+    DeleteView,
 )
 
 from . import forms
@@ -39,6 +41,40 @@ class ListingCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.seller = self.request.user
         return super().form_valid(form) 
+
+
+class ListingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Listing
+    form_class = forms.ListingForm
+    login_url = '/login/'
+    # TODO: redirect user back to /listing/new/ after login
+
+    # Set listing's seller to current logged-in user 
+    def form_valid(self, form):
+        form.instance.seller = self.request.user
+        return super().form_valid(form) 
+
+    def test_func(self):
+        # Get the current listing object
+        listing = self.get_object()
+
+        # Check if current user is the seller of listing
+        if self.request.user == listing.seller:
+            return True
+        return False 
+
+
+class ListingDeleteView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
+    model = Listing
+
+    def test_func(self):
+        # Get the current listing object
+        listing = self.get_object()
+
+        # Check if current user is the seller of listing
+        if self.request.user == listing.seller:
+            return True
+        return False 
 
 
 def login_view(request):
