@@ -16,6 +16,7 @@ class ListingForm(forms.ModelForm):
                 Field('title', placeholder='Enter Listing Title', autocomplete='off'),
                 Field('description', placeholder='Listing Description'),
                 Field('start_price', placeholder='Set Starting Price', autocomplete='off'),
+                Field('image_url', placeholder='Enter Image URL'),
                 Field('category', placeholder='Select Category'),
                 Submit('submit', 'Save Listing', css_class='btn btn-primary float-left'),
                 css_class='form-group col-sm-12 col-lg-8 offset-lg-2'
@@ -24,15 +25,8 @@ class ListingForm(forms.ModelForm):
 
     class Meta:
         model = Listing
-        fields = ("title", "description", "start_price", "seller", "category", "created_date", "image_url")
-    
-        widgets = {
-            'title': forms.TextInput,
-            'description': forms.Textarea,
-            'start_price': forms.TextInput,
-            'seller': forms.Select,
-            'category': forms.Select,
-        }
+        fields = ("title", "description", "start_price", "category", "image_url")
+        exclude = ["seller", "created_date"]
 
         labels = {
             'start_price': _('Starting Price'),

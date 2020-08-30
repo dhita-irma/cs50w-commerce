@@ -1,17 +1,36 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.generic import(
+    ListView, 
+    DetailView, 
+    CreateView,
+)
 
-from .forms import ListingForm
+from . import forms
 from .models import *
 
 
-def index(request):
-    return render(request, "auctions/active.html", {
-        "listings": Listing.objects.all()
-    })
+class ActiveListingView(ListView):
+    model = Listing
+    context_object_name = 'listings' 
+    ordering = ['-created_date'] #Order from latest to oldest
+
+
+class ListingDetailView(DetailView):
+    model = Listing
+
+
+class ListingCreateView(CreateView):
+    model = Listing
+    form_class = forms.ListingForm
+
+    def form_valid(self, form):
+        form.instance.seller = self.request.user
+        return super().form_valid(form) 
 
 
 def login_view(request):
@@ -65,12 +84,6 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
-def listing_item(request, listing_id):
-    listing = Listing.objects.get(pk=listing_id)
-    return render(request, "auctions/listing.html", {
-        "listing": listing
-    })
-
 def category_view(request, category):
     try:
         category = Category.objects.get(name=category)
@@ -88,10 +101,17 @@ def categories_index(request):
         "categories": categories
     })
 
-def create_listing(request):
-    if request.method == "POST":
-        pass
-    else:
-        return render(request, "auctions/create.html", {
-            "form": ListingForm()
-        })
+# @login_required(login_url="/login")
+# def create_listing(request):
+#     if request.method == "POST":
+#         form = forms.ListingForm(request.POST)
+#         if form.is_valid():
+#             new_listing = form.save(commit=False)
+#             new_listing.seller = request.user
+#             new_listing.save()
+#             return redirect(reverse("listing", args=[new_listing.id]))
+#         return HttpResponse("Form is not valid")
+#     else:
+#         return render(request, "auctions/listing_form.html", {
+#             "form": forms.ListingForm()
+#         })

@@ -1,16 +1,19 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 
 
 class User(AbstractUser):
     watchlist = models.ForeignKey("Listing", models.SET_NULL, blank=True, null=True)
+
 
 class Category(models.Model):
     name = models.CharField(max_length=32)
 
     def __str__(self):
         return self.name
+
 
 class Listing(models.Model):
     title = models.CharField(max_length=128)
@@ -24,6 +27,10 @@ class Listing(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse('listing-detail', kwargs={'pk': self.pk})
+
+
 class Bid(models.Model):
     item = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bids_offered")
     bidder = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="bids_placed")
@@ -32,6 +39,7 @@ class Bid(models.Model):
 
     def __str__(self):
         return f"Bid {self.id} on {self.item}"
+
 
 class Comment(models.Model):
     item = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listing_comments")
