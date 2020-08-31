@@ -144,3 +144,23 @@ def categories_index(request):
     return render(request, "auctions/categories-index.html", {
         "categories": categories
     })
+
+@login_required(login_url='/login/')
+def watchlist_view(request):
+    watchlist = Listing.objects.filter(added_by=request.user.id)
+    return render(request, "auctions/listing_list.html", {
+        "listings": watchlist
+    })
+
+@login_required(login_url='/login/')
+def watchlist_add(request, pk):
+    user = request.user
+    listing = Listing.objects.get(pk=pk)
+    user.watchlist.add(listing)
+    user.save()
+
+    listings = Listing.objects.filter(added_by=request.user.id)
+    return render(request, "auctions/listing_list.html", {
+        "listings": listings
+    })
+

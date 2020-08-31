@@ -5,8 +5,7 @@ from django.urls import reverse
 
 
 class User(AbstractUser):
-    watchlist = models.ForeignKey("Listing", models.SET_NULL, blank=True, null=True)
-
+    watchlist = models.ManyToManyField("Listing", blank=True, related_name="added_by")
 
 class Category(models.Model):
     name = models.CharField(max_length=32)

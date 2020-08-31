@@ -4,4 +4,8 @@
     <h1>{{ object.title }}</h1>
     <p>{{ object.description }}</p>
     <p>Price started: {{ object.start_price }}</p>
+    <a href="{% url 'watchlist-add' object.id %}">Add to Watchlist</a>
+    <!-- <form action="{% url 'watchlist-add' object.id %}" method="GET">
+        <button class="btn btn-primary" type="submit">Add to Watchlist</button>
+    </form> -->
 {% endblock body %}
