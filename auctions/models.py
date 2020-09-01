@@ -22,6 +22,7 @@ class Listing(models.Model):
     category = models.ManyToManyField(Category, blank=True, related_name="items")
     created_date = models.DateTimeField(default=timezone.now)
     image_url = models.URLField(blank=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.title
@@ -31,7 +32,7 @@ class Listing(models.Model):
 
 
 class Bid(models.Model):
-    item = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bids_offered")
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bids_offered")
     bidder = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="bids_placed")
     price = models.DecimalField(max_digits=12, decimal_places=2)
     time = models.DateTimeField(default=timezone.now)
@@ -41,8 +42,12 @@ class Bid(models.Model):
 
 
 class Comment(models.Model):
-    item = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listing_comments")
-    content = models.TextField()
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="comments")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="comments_posted")
-    posted_date = models.DateTimeField(default=timezone.now)
+    body = models.TextField(max_length=250)
+    posted_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.listing.title} - {self.user}"
+
 

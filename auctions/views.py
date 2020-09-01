@@ -29,6 +29,7 @@ class ActiveListingView(ListView):
 
 class ListingDetailView(DetailView):
     model = Listing
+    
 
 
 class ListingCreateView(LoginRequiredMixin, CreateView):
@@ -75,6 +76,20 @@ class ListingDeleteView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
         if self.request.user == listing.seller:
             return True
         return False 
+
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    # model = Comment
+    # form_class = forms.CommentForm
+    # template_name = 'listing-detail.html'
+    # login_url = '/login/'
+    # # TODO: redirect user back to comment after login
+
+    # # Set comment's user to current logged-in user 
+    # def form_valid(self, form):
+    #     form.instance.seller = self.request.user
+    #     return super().form_valid(form) 
+
+    pass
 
 
 def login_view(request):

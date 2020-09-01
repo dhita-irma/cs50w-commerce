@@ -1,11 +1,30 @@
 {% extends 'auctions/layout-listing.html' %}
+{% load crispy_forms_tags %}
 
 {% block body %}
     <h1>{{ object.title }}</h1>
+    <small>By {{ object.seller }} on {{ object.created_date }}</small>
     <p>{{ object.description }}</p>
     <p>Price started: {{ object.start_price }}</p>
     <a href="{% url 'watchlist-add' object.id %}">Add to Watchlist</a>
-    <!-- <form action="{% url 'watchlist-add' object.id %}" method="GET">
-        <button class="btn btn-primary" type="submit">Add to Watchlist</button>
-    </form> -->
+    <br>
+    <hr>
+    <h2>Comments</h2>
+    <a href="#">Add Comment</a>
+    <br><br>
+    {% if not object.comments.all %}
+    No comments yet... <a href="#">Add one</a>
+    {% else %}
+    {% for comment in  object.comments.all %}
+    <strong>{{ comment.user }} - 
+        {{ comment.posted_date }}
+    </strong>
+    <br>
+    {{ comment.body }}
+    <br><br>
+    <hr>
+    {% endfor %}
+    {% endif %}
+    <a href="#">Add Comment</a>
+    <br><br>
 {% endblock body %}

@@ -4,7 +4,7 @@ from crispy_forms.layout import Layout, Field, Submit, Div
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from .models import Listing
+from .models import Listing, Comment
 
 
 class ListingForm(forms.ModelForm):
@@ -34,3 +34,22 @@ class ListingForm(forms.ModelForm):
             'img_url': _('Image URL'),
 
         }
+
+
+class CommentForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Div(
+                Field('content', placeholder='Enter your comment here'),
+                Submit('submit', 'Send', css_class='btn btn-primary float-left'),
+                css_class='form-group col-sm-12 col-lg-8 offset-lg-2'
+            )
+        )
+    
+    class Meta:
+        model = Comment
+        fields = ('body',)
+        exclude = ['listing ', 'user', 'posted_date']
+
