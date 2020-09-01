@@ -7,6 +7,7 @@
     <p>{{ listing.description }}</p>
     <p>Price started: {{ listing.start_price }}</p>
 
+    <!-- Bid Form -->
     <form action="{% url 'listing-bid' listing.id %}" method="POST">
         {% csrf_token %}
         {% crispy bid-form %}
@@ -16,9 +17,10 @@
     <a href="{% url 'watchlist-add' listing.id %}">Add to Watchlist</a>
     <br>
     <hr>
+
+    <!-- Comment Section -->
     <h2>Comments</h2>
-    <a href="#">Add Comment</a>
-    <br><br>
+    <br>
     {% if not listing.comments.all %}
     No comments yet... <a href="#">Add one</a>
     {% else %}
@@ -32,7 +34,9 @@
     <hr>
     {% endfor %}
     {% endif %}
-    <form action="{% url 'listing-detail' listing.id %}" method="POST">
+
+    <!-- Comment Form -->
+    <form action="{% url 'listing-comment' listing.id %}" method="POST">
         {% csrf_token %}
         {% crispy comment-form %}
     </form>

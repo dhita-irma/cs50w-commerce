@@ -74,30 +74,14 @@ class ListingDeleteView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
 
 
 def listing_detail(request, pk):
-    if request.method == "GET":
-        listing = Listing.objects.get(pk=pk)
+    listing = Listing.objects.get(pk=pk)
 
-        return render(request, 'auctions/listing_detail.html', {
-            'listing': listing,
-            'comment-form': forms.CommentForm(),
-            'bid-form': forms.BidForm()
-        })
-    else:
-        if not request.user.is_authenticated:
-            return redirect(reverse("login"))
-        else: 
-            form = forms.CommentForm(request.POST)
-            if form.is_valid():
-                body = form.cleaned_data['body']
-                listing = Listing.objects.get(pk=pk)
-                comment = Comment(body=body, user=request.user, listing=listing)
-                comment.save()
-                return render(request, 'auctions/listing_detail.html', {
-                    'listing': listing,
-                    'form': forms.CommentForm(),
-                })
-            # TODO: error page if invalid
-
+    return render(request, 'auctions/listing_detail.html', {
+        'listing': listing,
+        'comment-form': forms.CommentForm(),
+        'bid-form': forms.BidForm()
+    })
+    
 
 def listing_bid(request, pk):
     if request.method == "POST":
@@ -111,6 +95,25 @@ def listing_bid(request, pk):
                 bid = Bid(listing=listing, user=request.user, price=price)
                 bid.save()
                 return redirect(reverse('listing-detail', args=[pk]))
+    else: 
+        return render(request, 'auctions/error.html')
+
+
+def listing_comment(request, pk):
+    if request.method == "POST":
+        if not request.user.is_authenticated:
+            return redirect(reverse("login"))
+        else:
+            form = forms.CommentForm(request.POST)
+            if form.is_valid():
+                body = form.cleaned_data['body']
+                listing = Listing.objects.get(pk=pk)
+
+                comment = Comment(listing=listing, user=request.user, body=body)
+                comment.save()
+            return redirect(reverse('listing-detail', args=[pk]))
+    else: 
+        return render(request, 'auctions/error.html')
 
 
 def login_view(request):
