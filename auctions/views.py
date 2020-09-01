@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from django.views.generic import(
@@ -25,11 +25,6 @@ class ActiveListingView(ListView):
 
     # Order listings from latest to oldest
     ordering = ['-created_date'] 
-
-
-class ListingDetailView(DetailView):
-    model = Listing
-    
 
 
 class ListingCreateView(LoginRequiredMixin, CreateView):
@@ -77,19 +72,29 @@ class ListingDeleteView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
             return True
         return False 
 
-class CommentCreateView(LoginRequiredMixin, CreateView):
-    # model = Comment
-    # form_class = forms.CommentForm
-    # template_name = 'listing-detail.html'
-    # login_url = '/login/'
-    # # TODO: redirect user back to comment after login
 
-    # # Set comment's user to current logged-in user 
-    # def form_valid(self, form):
-    #     form.instance.seller = self.request.user
-    #     return super().form_valid(form) 
+def listing_detail(request, pk):
+    if request.method == "GET":
+        listing = Listing.objects.get(pk=pk)
 
-    pass
+        return render(request, 'auctions/listing_detail.html', {
+            'listing': listing,
+            'form': forms.CommentForm(),
+        })
+    else:
+        if not request.user.is_authenticated:
+            return redirect(reverse("login"))
+        else: 
+            form = forms.CommentForm(request.POST)
+            if form.is_valid():
+                body = form.cleaned_data['body']
+                listing = Listing.objects.get(pk=pk)
+                comment = Comment(body=body, user=request.user, listing=listing)
+                comment.save()
+                return render(request, 'auctions/listing_detail.html', {
+                    'listing': listing,
+                    'form': forms.CommentForm(),
+                })
 
 
 def login_view(request):

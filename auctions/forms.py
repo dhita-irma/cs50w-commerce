@@ -42,9 +42,9 @@ class CommentForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
-                Field('content', placeholder='Enter your comment here'),
+                Field('body', placeholder='Enter your comment here'),
                 Submit('submit', 'Send', css_class='btn btn-primary float-left'),
-                css_class='form-group col-sm-12 col-lg-8 offset-lg-2'
+                css_class='form-group col-sm-12 col-lg-12'
             )
         )
     
@@ -53,3 +53,6 @@ class CommentForm(forms.ModelForm):
         fields = ('body',)
         exclude = ['listing ', 'user', 'posted_date']
 
+        labels = {
+            'body': _('Comment'),
+        }

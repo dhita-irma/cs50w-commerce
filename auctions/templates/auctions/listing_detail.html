@@ -2,20 +2,20 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
-    <h1>{{ object.title }}</h1>
-    <small>By {{ object.seller }} on {{ object.created_date }}</small>
-    <p>{{ object.description }}</p>
-    <p>Price started: {{ object.start_price }}</p>
-    <a href="{% url 'watchlist-add' object.id %}">Add to Watchlist</a>
+    <h1>{{ listing.title }}</h1>
+    <small>By {{ listing.seller }} on {{ listing.created_date }}</small>
+    <p>{{ listing.description }}</p>
+    <p>Price started: {{ listing.start_price }}</p>
+    <a href="{% url 'watchlist-add' listing.id %}">Add to Watchlist</a>
     <br>
     <hr>
     <h2>Comments</h2>
     <a href="#">Add Comment</a>
     <br><br>
-    {% if not object.comments.all %}
+    {% if not listing.comments.all %}
     No comments yet... <a href="#">Add one</a>
     {% else %}
-    {% for comment in  object.comments.all %}
+    {% for comment in  listing.comments.all %}
     <strong>{{ comment.user }} - 
         {{ comment.posted_date }}
     </strong>
@@ -25,6 +25,9 @@
     <hr>
     {% endfor %}
     {% endif %}
-    <a href="#">Add Comment</a>
+    <form action="{% url 'listing-detail' listing.id %}" method="POST">
+        {% csrf_token %}
+        {% crispy form %}
+    </form>
     <br><br>
 {% endblock body %}
