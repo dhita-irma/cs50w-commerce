@@ -6,6 +6,13 @@
     <small>By {{ listing.seller }} on {{ listing.created_date }}</small>
     <p>{{ listing.description }}</p>
     <p>Price started: {{ listing.start_price }}</p>
+
+    <form action="{% url 'listing-bid' listing.id %}" method="POST">
+        {% csrf_token %}
+        {% crispy bid-form %}
+    </form>
+
+    <br>
     <a href="{% url 'watchlist-add' listing.id %}">Add to Watchlist</a>
     <br>
     <hr>
@@ -27,7 +34,7 @@
     {% endif %}
     <form action="{% url 'listing-detail' listing.id %}" method="POST">
         {% csrf_token %}
-        {% crispy form %}
+        {% crispy comment-form %}
     </form>
     <br><br>
 {% endblock body %}

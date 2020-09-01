@@ -79,7 +79,8 @@ def listing_detail(request, pk):
 
         return render(request, 'auctions/listing_detail.html', {
             'listing': listing,
-            'form': forms.CommentForm(),
+            'comment-form': forms.CommentForm(),
+            'bid-form': forms.BidForm()
         })
     else:
         if not request.user.is_authenticated:
@@ -95,6 +96,21 @@ def listing_detail(request, pk):
                     'listing': listing,
                     'form': forms.CommentForm(),
                 })
+            # TODO: error page if invalid
+
+
+def listing_bid(request, pk):
+    if request.method == "POST":
+        if not request.user.is_authenticated:
+            return redirect(reverse("login"))
+        else:
+            form = forms.BidForm(request.POST)
+            if form.is_valid():
+                price = form.cleaned_data['price']
+                listing = Listing.objects.get(pk=pk)
+                bid = Bid(listing=listing, user=request.user, price=price)
+                bid.save()
+                return redirect(reverse('listing-detail', args=[pk]))
 
 
 def login_view(request):

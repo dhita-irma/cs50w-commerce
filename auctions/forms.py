@@ -4,7 +4,7 @@ from crispy_forms.layout import Layout, Field, Submit, Div
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from .models import Listing, Comment
+from .models import Listing, Comment, Bid
 
 
 class ListingForm(forms.ModelForm):
@@ -55,4 +55,25 @@ class CommentForm(forms.ModelForm):
 
         labels = {
             'body': _('Comment'),
+        }
+
+class BidForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Div(
+                Field('price', css_class='form-group mx-sm-3 mb-2'),
+                Submit('submit', 'Place Bid', css_class='btn btn-primary float-left mb-2'),
+                css_class='form-inline'
+            )
+        )
+    
+    class Meta:
+        model = Bid
+        fields = ('price',)
+        exclude = ['listing ', 'user', 'time']
+
+        labels = {
+            'price': _('Bid')
         }
