@@ -75,13 +75,20 @@ class ListingDeleteView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
 
 def listing_detail(request, pk):
     listing = Listing.objects.get(pk=pk)
+    bids = listing.bids_offered.all()
+
+    user = request.user
+    is_watchlist = False
+    if user.objects.get(watchlist=pk):
+        is_watchlist = True
 
     return render(request, 'auctions/listing_detail.html', {
         'listing': listing,
         'comment-form': forms.CommentForm(),
-        'bid-form': forms.BidForm()
+        'bid-form': forms.BidForm(),
+        'is_watchlist': is_watchlist,
     })
-    
+
 
 def listing_bid(request, pk):
     if request.method == "POST":
@@ -92,9 +99,11 @@ def listing_bid(request, pk):
             if form.is_valid():
                 price = form.cleaned_data['price']
                 listing = Listing.objects.get(pk=pk)
-                bid = Bid(listing=listing, user=request.user, price=price)
-                bid.save()
-                return redirect(reverse('listing-detail', args=[pk]))
+                if price > listing.get_current_bid():
+                    bid = Bid(listing=listing, user=request.user, price=price)
+                    bid.save()
+                    return redirect(reverse('listing-detail', args=[pk]))
+                return HttpResponse("Invalid price")
     else: 
         return render(request, 'auctions/error.html')
 

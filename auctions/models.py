@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
@@ -29,6 +30,14 @@ class Listing(models.Model):
 
     def get_absolute_url(self):
         return reverse('listing-detail', kwargs={'pk': self.pk})
+
+    def get_current_bid(self):
+        bids = self.bids_offered.all()
+        if bids:
+            highest = bids.order_by('-price').first()
+            return highest.price
+        return self.start_price
+
 
 
 class Bid(models.Model):
