@@ -38,6 +38,12 @@ class Listing(models.Model):
             return highest.price
         return self.start_price
 
+    def get_winner(self):
+        bids = self.bids_offered.all()
+        if bids:
+            highest = bids.order_by('-price').first()
+            return highest.user
+        return None
 
 
 class Bid(models.Model):

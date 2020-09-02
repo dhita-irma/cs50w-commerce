@@ -2,39 +2,63 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
-    <h1>{{ listing.title }}</h1>
-    <small>By {{ listing.seller }} on {{ listing.created_date }}</small>
+    <!-- Title -->
+    {% if listing.is_active %}
+        <h1>{{ listing.title }}</h1>
+    {% else %}
+        <h1>[CLOSED] {{ listing.title }}</h1>        
+    {% endif %}
+
+    <!-- Details -->
+    <small>By {{ listing.seller }} on {{ listing.created_date }}</small><br>
+    <img src="{{ listing.image_url }}" width="500px"><br>
     <p>{{ listing.description }}</p>
     <p>Price started: ${{ listing.start_price }}</p>
 
-    <strong>Current bid: ${{ listing.get_current_bid }}</strong>
+    <!-- Active Auction -->
+    {% if listing.is_active %}
+        <strong>Current bid: ${{ listing.get_current_bid }}</strong>
 
-    <!-- Bid Form -->
-    {% if user != listing.seller %}
-        <form action="{% url 'listing-bid' listing.id %}" method="POST">
-            {% csrf_token %}
-            {% crispy bid-form %}
-        </form>
-    {% endif %}
+        <!-- Bid Form -->
+        {% if user != listing.seller %}
+            <form action="{% url 'listing-bid' listing.id %}" method="POST">
+                {% csrf_token %}
+                {% crispy bid-form %}
+            </form>
+        {% endif %}
 
-    <!-- Close Auction -->
-    {% if user == listing.seller %}
-        <form action="{% url 'listing-close' listing.id %}">
-            <button type="submit" class="btn btn-primary">Close Auction</button>
-        </form>      
-    {% endif %}
+        <!-- Close Auction -->
+        {% if user == listing.seller %}
+            <form action="{% url 'listing-close' listing.id %}">
+                <button type="submit" class="btn btn-primary">Close Auction</button>
+            </form>      
+        {% endif %}
 
-    <!-- Watchlist -->
-    {% if not is_watchlist %}
-        <br>
-        <a href="{% url 'watchlist-add' listing.id %}">Add to Watchlist</a>
-        <br>
+        <!-- Watchlist -->
+        {% if not is_watchlist %}
+            <br>
+            <a href="{% url 'watchlist-add' listing.id %}">Add to Watchlist</a>
+            <br>
+        {% else %}
+            <br>
+            <a href="{% url 'watchlist-remove' listing.id %}">Remove from Watchlist</a>
+            <br>
+        {% endif %}
+    
+    <!-- Closed Auction -->
     {% else %}
-        <br>
-        <a href="{% url 'watchlist-remove' listing.id %}">Remove from Watchlist</a>
-        <br>
+        {% if listing.get_winner %}
+            {% if listing.get_winner == user%}
+                <strong>Congratulations, {{ user }}! You won the auction!</strong><br>
+            {% endif %}
+                <strong>Sold for: ${{ listing.get_current_bid }}</strong>
+        {% else %}
+            <strong>This listing is closed.</strong>
+        {% endif %}
+
     {% endif %}
-        
+    
+    
         <hr>
     <!-- Comment Section -->
     <h2>Comments</h2>

@@ -74,6 +74,7 @@ class ListingDeleteView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
 
 def listing_detail(request, pk):
     listing = Listing.objects.get(pk=pk)
+    # bids = Bid.objects.filter(listing=pk)
     user = request.user
 
     # Check if current listing is in user.watchlist
