@@ -19,6 +19,11 @@ from . import forms
 from .models import *
 
 
+def index(request):
+    return render(request, 'auctions/index.html', {
+        "user": request.user
+    })
+
 class ActiveListingView(ListView):
     queryset = Listing.objects.filter(is_active=True)
     context_object_name = 'listings' 

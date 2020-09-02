@@ -9,11 +9,12 @@ from .views import (
 from . import views
 
 urlpatterns = [
-    path("", ActiveListingView.as_view(), name="index"),
+    path("", views.index, name="index"),
     path("login/", views.login_view, name="login"),
     path("logout/", views.logout_view, name="logout"),
     path("register/", views.register, name="register"),
     
+    path("listing/", ActiveListingView.as_view(), name="active"),
     path("listing/new/", ListingCreateView.as_view(), name="listing-create"),
     path("listing/<int:pk>/", views.listing_detail, name="listing-detail"),
     path("listing/<int:pk>/update/", ListingUpdateView.as_view(), name="listing-update"),
@@ -23,9 +24,9 @@ urlpatterns = [
     path("listing/<int:pk>/close/", views.listing_close, name="listing-close"),
     
 
+    path("watchlist/", views.watchlist_view, name="watchlist"),
     path("listing/<int:pk>/watchlist/", views.watchlist_add, name="watchlist-add"),
     path("listing/<int:pk>/watchlist/remove/", views.watchlist_remove, name="watchlist-remove"),
-    path("watchlist/", views.watchlist_view, name="watchlist"),
 
     path("categories/", views.category_index, name="category-index"),
     path("categories/<str:category>", views.category_list, name="category-list"),
