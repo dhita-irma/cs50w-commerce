@@ -75,11 +75,11 @@ class ListingDeleteView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
 
 def listing_detail(request, pk):
     listing = Listing.objects.get(pk=pk)
-    bids = listing.bids_offered.all()
-
     user = request.user
+
+    # Check if current listing is in user.watchlist
     is_watchlist = False
-    if user.objects.get(watchlist=pk):
+    if user.watchlist.filter(pk=pk).exists():
         is_watchlist = True
 
     return render(request, 'auctions/listing_detail.html', {
