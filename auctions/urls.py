@@ -22,7 +22,7 @@ urlpatterns = [
     path("listing/<int:pk>/comment/", views.listing_comment, name="listing-comment"),
 
     path("listing/<int:pk>/watchlist/", views.watchlist_add, name="watchlist-add"),
-    path("listing/<int:pk>/watchlist/remove/", views.watchlist_add, name="watchlist-remove"),
+    path("listing/<int:pk>/watchlist/remove/", views.watchlist_remove, name="watchlist-remove"),
 
 
     path("watchlist/", views.watchlist_view, name="watchlist"),

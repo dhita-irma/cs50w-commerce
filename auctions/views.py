@@ -79,8 +79,9 @@ def listing_detail(request, pk):
 
     # Check if current listing is in user.watchlist
     is_watchlist = False
-    if user.watchlist.filter(pk=pk).exists():
-        is_watchlist = True
+    if user.is_authenticated:
+        if user.watchlist.filter(pk=pk).exists():
+            is_watchlist = True
 
     return render(request, 'auctions/listing_detail.html', {
         'listing': listing,
@@ -212,3 +213,7 @@ def watchlist_add(request, pk):
         "listings": listings
     })
 
+def watchlist_remove(request, pk):
+    user = request.user
+    user.watchlist.remove(pk)
+    return redirect(reverse('watchlist'))
