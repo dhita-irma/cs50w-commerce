@@ -25,9 +25,8 @@ urlpatterns = [
 
     path("listing/<int:pk>/watchlist/", views.watchlist_add, name="watchlist-add"),
     path("listing/<int:pk>/watchlist/remove/", views.watchlist_remove, name="watchlist-remove"),
-
-
     path("watchlist/", views.watchlist_view, name="watchlist"),
-    path("categories/", views.categories_index, name="categories-index"),
-    path("categories/<str:category>", views.category_view, name="categories"),
+
+    path("categories/", views.category_index, name="category-index"),
+    path("categories/<str:category>", views.category_list, name="category-list"),
 ]

@@ -5,7 +5,7 @@
     <h1>Categories</h1>
     <ol>
         {% for category in categories %}
-            <li><a href="{% url 'categories' category.name %}">{{ category.name }}</a></li>
+            <li><a href="{% url 'category-list' category.name %}">{{ category.name }}</a></li>
         {% endfor %}
     </ol>
 {% endblock body %}

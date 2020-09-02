@@ -184,22 +184,22 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
-def category_view(request, category):
+def category_index(request):
+    categories = Category.objects.all()
+    return render(request, "auctions/category_index.html", {
+        "categories": categories
+    })
+
+def category_list(request, category):
     try:
         category = Category.objects.get(name=category)
-        category_id = category.id
-        filtered_listings = Listing.objects.filter(category=category_id)
-        return render(request, "auctions/category.html", {
+        filtered_listings = Listing.objects.filter(category=category.id)
+        return render(request, "auctions/category_list.html", {
             "filtered_listings": filtered_listings
         })     
     except:
         return render(request, "auctions/error.html")
 
-def categories_index(request):
-    categories = Category.objects.all()
-    return render(request, "auctions/categories-index.html", {
-        "categories": categories
-    })
 
 @login_required(login_url='/login/')
 def watchlist_view(request):
