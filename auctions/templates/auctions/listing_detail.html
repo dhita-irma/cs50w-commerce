@@ -10,10 +10,12 @@
     <strong>Current bid: ${{ listing.get_current_bid }}</strong>
 
     <!-- Bid Form -->
-    <form action="{% url 'listing-bid' listing.id %}" method="POST">
-        {% csrf_token %}
-        {% crispy bid-form %}
-    </form>
+    {% if user != listing.seller %}
+        <form action="{% url 'listing-bid' listing.id %}" method="POST">
+            {% csrf_token %}
+            {% crispy bid-form %}
+        </form>
+    {% endif %}
 
     <!-- Watchlist -->
     {% if not is_watchlist %}

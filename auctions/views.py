@@ -88,6 +88,7 @@ def listing_detail(request, pk):
         'comment-form': forms.CommentForm(),
         'bid-form': forms.BidForm(),
         'is_watchlist': is_watchlist,
+        'user': user
     })
 
 
