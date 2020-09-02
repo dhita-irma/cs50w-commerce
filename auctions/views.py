@@ -8,11 +8,11 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from django.views.generic import(
-    ListView, 
-    DetailView, 
     CreateView,
-    UpdateView,
     DeleteView,
+    DetailView, 
+    ListView, 
+    UpdateView,
 )
 
 from . import forms
@@ -20,12 +20,11 @@ from .models import *
 
 
 class ActiveListingView(ListView):
-    model = Listing
+    queryset = Listing.objects.filter(is_active=True)
     context_object_name = 'listings' 
 
     # Order listings from latest to oldest
     ordering = ['-created_date'] 
-
 
 class ListingCreateView(LoginRequiredMixin, CreateView):
     model = Listing
@@ -84,10 +83,10 @@ def listing_detail(request, pk):
             is_watchlist = True
 
     return render(request, 'auctions/listing_detail.html', {
-        'listing': listing,
-        'comment-form': forms.CommentForm(),
         'bid-form': forms.BidForm(),
+        'comment-form': forms.CommentForm(),
         'is_watchlist': is_watchlist,
+        'listing': listing,
         'user': user
     })
 
@@ -109,6 +108,12 @@ def listing_bid(request, pk):
     else: 
         return render(request, 'auctions/error.html')
 
+
+def listing_close(request, pk):
+     listing = Listing.objects.get(pk=pk)        
+     listing.is_active = False
+     listing.save()
+     return redirect(reverse('index'))
 
 def listing_comment(request, pk):
     if request.method == "POST":

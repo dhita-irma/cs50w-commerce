@@ -20,6 +20,8 @@ urlpatterns = [
     path("listing/<int:pk>/delete/", ListingDeleteView.as_view(), name="listing-delete"),
     path("listing/<int:pk>/bid/", views.listing_bid, name="listing-bid"),
     path("listing/<int:pk>/comment/", views.listing_comment, name="listing-comment"),
+    path("listing/<int:pk>/close/", views.listing_close, name="listing-close"),
+    
 
     path("listing/<int:pk>/watchlist/", views.watchlist_add, name="watchlist-add"),
     path("listing/<int:pk>/watchlist/remove/", views.watchlist_remove, name="watchlist-remove"),

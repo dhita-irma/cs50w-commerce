@@ -17,6 +17,13 @@
         </form>
     {% endif %}
 
+    <!-- Close Auction -->
+    {% if user == listing.seller %}
+        <form action="{% url 'listing-close' listing.id %}">
+            <button type="submit" class="btn btn-primary">Close Auction</button>
+        </form>      
+    {% endif %}
+
     <!-- Watchlist -->
     {% if not is_watchlist %}
         <br>
