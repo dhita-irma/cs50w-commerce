@@ -13,46 +13,26 @@
     <h3 class="text-center font-weight-bold">Popular Categories</h3>
         <div class="categories">
             <div class="row">
+                {% for category in categories_1 %}
                 <div class="category col-sm-12 col-md-6 col-lg-3">
-                    <a href="#">
-                        <img src="{% static 'auctions/images/leaves.jpg' %}" alt="Arts">
-                        <div class="centered">Arts</div>
+                    <a href="{% url 'category-list' category.name %}">
+                        <img src="{% static 'auctions/images/leaves.jpg' %}" alt="{{ category.name }}">
+                        <div class="centered">{{ category.name }}</div>
                     </a>
                 </div>
-                <div class="category col-sm-12 col-md-6 col-lg-3">
-                    <img src="{% static 'auctions/images/leaves.jpg' %}" alt="Books">
-                    <div class="centered">Books</div>
-                </div>
-                <div class="category col-sm-12 col-md-6 col-lg-3">
-                    <img src="{% static 'auctions/images/leaves.jpg' %}" alt="Fashion">
-                    <div class="centered">Fashion</div>
-                </div>
-                <div class="category col-sm-12 col-md-6 col-lg-3">
-                    <img src="{% static 'auctions/images/leaves.jpg' %}" alt="Music">
-                    <div class="centered">Music</div>
-                </div>
+                {% endfor %}
             </div>
             <div class="row">
+                {% for category in categories_2 %}
                 <div class="category col-sm-12 col-md-6 col-lg-3">
-                    <img src="{% static 'auctions/images/leaves.jpg' %}" alt="Interior & Decorations">
-                    <div class="centered">Interior & Decorations</div>
+                    <a href="{% url 'category-list' category.name %}">
+                        <img src="{% static 'auctions/images/leaves.jpg' %}" alt="{{ category.name }}">
+                        <div class="centered">{{ category.name }}</div>
+                    </a>
                 </div>
-                <div class="category col-sm-12 col-md-6 col-lg-3">
-                    <img src="{% static 'auctions/images/leaves.jpg' %}" alt="Jewelery & Watches">
-                    <div class="centered">Jewelery & Watches</div>
-                </div>
-                <div class="category col-sm-12 col-md-6 col-lg-3">
-                    <img src="{% static 'auctions/images/leaves.jpg' %}" alt="Toys & Models">
-                    <div class="centered">Toys & Models</div>
-                </div>
-                <div class="category col-sm-12 col-md-6 col-lg-3">
-                    <img src="{% static 'auctions/images/leaves.jpg' %}" alt="Coins">
-                    <div class="centered">Coins & Stamps</div>
-                </div>
+                {% endfor %}
             </div>
         </div>
-
-
-</div>
+    </div>
     
-{% endblock body%}
+    {% endblock body%}

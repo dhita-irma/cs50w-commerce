@@ -20,9 +20,11 @@ from .models import *
 
 
 def index(request):
+    categories = Category.objects.all()
     return render(request, 'auctions/index.html', {
         "user": request.user,
-        "categories": Category.objects.all(),
+        "categories_1": categories[:4],
+        "categories_2": categories[4:],
     })
 
 class ActiveListingView(ListView):
