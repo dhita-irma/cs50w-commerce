@@ -1,6 +1,58 @@
 {% extends "auctions/layout.html" %}
+{% load static %}
+
+
+{% block title %}
+    Auctions
+{% endblock title %}
 
 {% block body %}
+<div class="content p-4">
 
+    <!-- Popular Categories -->
+    <h3 class="text-center font-weight-bold">Popular Categories</h3>
+        <div class="categories">
+            <div class="row">
+                <div class="category col-sm-12 col-md-6 col-lg-3">
+                    <a href="#">
+                        <img src="{% static 'auctions/images/leaves.jpg' %}" alt="Arts">
+                        <div class="centered">Arts</div>
+                    </a>
+                </div>
+                <div class="category col-sm-12 col-md-6 col-lg-3">
+                    <img src="{% static 'auctions/images/leaves.jpg' %}" alt="Books">
+                    <div class="centered">Books</div>
+                </div>
+                <div class="category col-sm-12 col-md-6 col-lg-3">
+                    <img src="{% static 'auctions/images/leaves.jpg' %}" alt="Fashion">
+                    <div class="centered">Fashion</div>
+                </div>
+                <div class="category col-sm-12 col-md-6 col-lg-3">
+                    <img src="{% static 'auctions/images/leaves.jpg' %}" alt="Music">
+                    <div class="centered">Music</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="category col-sm-12 col-md-6 col-lg-3">
+                    <img src="{% static 'auctions/images/leaves.jpg' %}" alt="Interior & Decorations">
+                    <div class="centered">Interior & Decorations</div>
+                </div>
+                <div class="category col-sm-12 col-md-6 col-lg-3">
+                    <img src="{% static 'auctions/images/leaves.jpg' %}" alt="Jewelery & Watches">
+                    <div class="centered">Jewelery & Watches</div>
+                </div>
+                <div class="category col-sm-12 col-md-6 col-lg-3">
+                    <img src="{% static 'auctions/images/leaves.jpg' %}" alt="Toys & Models">
+                    <div class="centered">Toys & Models</div>
+                </div>
+                <div class="category col-sm-12 col-md-6 col-lg-3">
+                    <img src="{% static 'auctions/images/leaves.jpg' %}" alt="Coins">
+                    <div class="centered">Coins & Stamps</div>
+                </div>
+            </div>
+        </div>
+
+
+</div>
     
-{% endblock %}
+{% endblock body%}

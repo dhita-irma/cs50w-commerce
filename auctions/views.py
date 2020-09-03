@@ -21,7 +21,8 @@ from .models import *
 
 def index(request):
     return render(request, 'auctions/index.html', {
-        "user": request.user
+        "user": request.user,
+        "categories": Category.objects.all(),
     })
 
 class ActiveListingView(ListView):

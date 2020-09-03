@@ -49,6 +49,46 @@
     box-shadow: 1px 1px 5px #000;
 }
 
+/* Popular Categories */
+.categories {
+    margin: 30px 0;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.col-3 {
+    flex-basis: 30%;
+    min-width: 250px;
+    margin-bottom: 30px;
+}
+.categories img{
+    width: 100%;
+    opacity: 75%;
+}
+
+.categories img:hover {
+    opacity: 100%;
+    border: 1px solid darkgray;
+    -webkit-box-shadow: 0px 0px 10px gray;
+            box-shadow: 0px 0px 10px gray;
+}
+
+.category {
+    position: relative;
+    text-align:center;
+    font-size: 200%;
+    font-weight: 500;
+    color: white;
+    margin-bottom: 30px;
+}
+
+.category .centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 body {
     padding-top: 0px;
 }
