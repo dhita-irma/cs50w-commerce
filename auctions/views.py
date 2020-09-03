@@ -21,10 +21,13 @@ from .models import *
 
 def index(request):
     categories = Category.objects.all()
+    listings = Listing.objects.order_by('-created_date').all()
+
     return render(request, 'auctions/index.html', {
         "user": request.user,
         "categories_1": categories[:4],
         "categories_2": categories[4:],
+        "listings":listings[:4]
     })
 
 class ActiveListingView(ListView):
