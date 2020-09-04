@@ -1,6 +1,19 @@
 {% extends 'auctions/layout-listing.html' %}
 {% load crispy_forms_tags %}
 
+{% block title %}
+    {{ listing.title }}
+{% endblock title %}
+
+
+{% block category %}
+    {% for category in categories %}
+        <p class="text-center">
+            <a href="{% url 'category-list' category.id %}" class="">{{ category }}</a>
+        </p>
+    {% endfor %}
+{% endblock %}
+
 {% block body %}
     <!-- Title -->
     {% if listing.is_active %}

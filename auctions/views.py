@@ -30,12 +30,21 @@ def index(request):
         "listings":listings[:4]
     })
 
-class ActiveListingView(ListView):
-    queryset = Listing.objects.filter(is_active=True)
-    context_object_name = 'listings' 
+def active_listing(request):
+    listings = Listing.objects.filter(is_active=True)
+    categories = Category.objects.order_by('name').all()
 
-    # Order listings from latest to oldest
-    ordering = ['-created_date'] 
+    return render(request, 'auctions/listing_list.html', {
+        "listings": listings,
+        "categories": categories,
+    })
+
+# class ActiveListingView(ListView):
+#     queryset = Listing.objects.filter(is_active=True)
+#     context_object_name = 'listings' 
+
+#     # Order listings from latest to oldest
+#     ordering = ['-created_date'] 
 
 class ListingCreateView(LoginRequiredMixin, CreateView):
     model = Listing

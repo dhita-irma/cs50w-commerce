@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import (
-    ActiveListingView, 
+    # ActiveListingView, 
     ListingCreateView,
     ListingUpdateView,
     ListingDeleteView,
@@ -14,7 +14,8 @@ urlpatterns = [
     path("logout/", views.logout_view, name="logout"),
     path("register/", views.register, name="register"),
     
-    path("listing/", ActiveListingView.as_view(), name="active"),
+    # path("listing/", ActiveListingView.as_view(), name="active"),
+    path("listing/", views.active_listing, name="active"),
     path("listing/new/", ListingCreateView.as_view(), name="listing-create"),
     path("listing/<int:pk>/", views.listing_detail, name="listing-detail"),
     path("listing/<int:pk>/update/", ListingUpdateView.as_view(), name="listing-update"),
