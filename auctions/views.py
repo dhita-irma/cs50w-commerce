@@ -39,12 +39,19 @@ def active_listing(request):
         "categories": categories,
     })
 
-# class ActiveListingView(ListView):
-#     queryset = Listing.objects.filter(is_active=True)
-#     context_object_name = 'listings' 
 
-#     # Order listings from latest to oldest
-#     ordering = ['-created_date'] 
+class ListingDeleteView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
+    model = Listing
+
+    def test_func(self):
+        # Get the current listing object
+        listing = self.get_object()
+
+        # Check if current user is the seller of listing
+        if self.request.user == listing.seller:
+            return True
+        return False 
+
 
 class ListingCreateView(LoginRequiredMixin, CreateView):
     model = Listing
@@ -79,21 +86,11 @@ class ListingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return False 
 
 
-class ListingDeleteView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
-    model = Listing
-
-    def test_func(self):
-        # Get the current listing object
-        listing = self.get_object()
-
-        # Check if current user is the seller of listing
-        if self.request.user == listing.seller:
-            return True
-        return False 
 
 
 def listing_detail(request, pk):
     listing = Listing.objects.get(pk=pk)
+    categories = Category.objects.order_by('name').all()
     # bids = Bid.objects.filter(listing=pk)
     user = request.user
 
@@ -108,6 +105,7 @@ def listing_detail(request, pk):
         'comment-form': forms.CommentForm(),
         'is_watchlist': is_watchlist,
         'listing': listing,
+        'categories': categories,
         'user': user
     })
 
