@@ -6,13 +6,7 @@
 {% endblock title %}
 
 
-{% block category %}
-    {% for category in categories %}
-        <p class="text-center">
-            <a href="{% url 'category-list' category.id %}" class="">{{ category }}</a>
-        </p>
-    {% endfor %}
-{% endblock %}
+
 
 {% block body %}
     <!-- Title -->

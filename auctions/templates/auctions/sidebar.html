@@ -12,9 +12,11 @@
             <h4 class="text-center">Categories</h4>
         </a>
         <hr>
-        {% block category %}
-            
-        {% endblock %}
+        {% for category in categories %}
+            <p class="text-center">
+                <a href="{% url 'category-list' category.id %}" class="">{{ category }}</a>
+            </p>
+        {% endfor %}
     </div>
     <br>
     <div class="section">

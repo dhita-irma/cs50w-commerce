@@ -26,17 +26,15 @@ def index(request):
     return render(request, 'auctions/index.html', {
         "user": request.user,
         "categories_1": categories[:4],
-        "categories_2": categories[4:],
+        "categories_2": categories[4:8],
         "listings":listings[:4]
     })
 
 def active_listing(request):
     listings = Listing.objects.filter(is_active=True)
-    categories = Category.objects.order_by('name').all()
 
     return render(request, 'auctions/listing_list.html', {
         "listings": listings,
-        "categories": categories,
     })
 
 
@@ -90,7 +88,6 @@ class ListingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 def listing_detail(request, pk):
     listing = Listing.objects.get(pk=pk)
-    categories = Category.objects.order_by('name').all()
     # bids = Bid.objects.filter(listing=pk)
     user = request.user
 
@@ -105,7 +102,6 @@ def listing_detail(request, pk):
         'comment-form': forms.CommentForm(),
         'is_watchlist': is_watchlist,
         'listing': listing,
-        'categories': categories,
         'user': user
     })
 
