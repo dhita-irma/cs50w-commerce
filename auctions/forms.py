@@ -42,11 +42,12 @@ class CommentForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
-                Field('body', placeholder='Enter your comment here'),
+                Field('body', placeholder='Enter your comment here', row="3"),
                 Submit('submit', 'Send', css_class='btn btn-primary float-left'),
-                css_class='form-group col-sm-12 col-lg-12'
+                css_class='form-group'
             )
         )
+        self.fields['body'].widget.attrs['rows'] = 4
     
     class Meta:
         model = Comment
@@ -56,6 +57,7 @@ class CommentForm(forms.ModelForm):
         labels = {
             'body': _('Comment'),
         }
+
 
 class BidForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -68,6 +70,7 @@ class BidForm(forms.ModelForm):
                 css_class='form-inline'
             )
         )
+        self.helper.form_show_labels = False
     
     class Meta:
         model = Bid

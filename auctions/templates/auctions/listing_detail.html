@@ -6,88 +6,100 @@
 {% endblock title %}
 
 
-
-
 {% block body %}
-    <!-- Title -->
-    {% if listing.is_active %}
-        <h1>{{ listing.title }}</h1>
-    {% else %}
-        <h1>[CLOSED] {{ listing.title }}</h1>        
-    {% endif %}
 
-    <!-- Details -->
-    <small>By {{ listing.seller }} on {{ listing.created_date }}</small><br>
-    <img src="{{ listing.image_url }}" width="500px"><br>
-    <p>{{ listing.description }}</p>
-    <p>Price started: ${{ listing.start_price }}</p>
+    <!-- Page Content -->
+    <div class="container"style="background-color: white;">
+        <div class="row">
+            <!-- Listing Column -->
+            <div class="col-lg-8" style="background-color: white;">
 
-    <!-- Active Auction -->
-    {% if listing.is_active %}
-        <strong>Current bid: ${{ listing.get_current_bid }}</strong>
+                <!-- Listing Information -->
+                <h1 class="mt-4">{{ listing.title }}</h1>
+                <hr>
+                <p>by {{ listing.seller }}</p>
+                <p>Posted on {{ listing.created_date }}</p>
+                <hr>
+                <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="img-fluid rounded">
+                <p class="lead mt-4">{{ listing.description }}</p>
+                <hr>
 
-        <!-- Bid Form -->
-        {% if user != listing.seller %}
-            <form action="{% url 'listing-bid' listing.id %}" method="POST">
-                {% csrf_token %}
-                {% crispy bid-form %}
-            </form>
-        {% endif %}
+                <!-- Comments Form -->
+                <div class="card my-4">
+                    <h5 class="card-header bg-custom">Leave a Comment:</h5>
+                    <div class="card-body">
+                        <form action="{% url 'listing-comment' listing.id %}" method="POST">
+                            {% csrf_token %}
+                            {% crispy comment-form %}
+                        </form>
+                    </div>
+                </div>
 
-        <!-- Close Auction -->
-        {% if user == listing.seller %}
-            <form action="{% url 'listing-close' listing.id %}">
-                <button type="submit" class="btn btn-primary">Close Auction</button>
-            </form>      
-        {% endif %}
+                <!-- Comment Section -->
+                {% if not listing.comments.all %}
+                    No comments yet... 
+                {% else %}
+                    {% for comment in  listing.comments.all %}
+                        <div class="media mb-4">
+                            <img src="http://placehold.it/50x50" alt="" class="d-flex mr-3 rounded-circle">
+                            <div class="media-body">
+                            <h5 class="mt-0">{{ comment.user }} <small class="text-muted">{{ comment.posted_date }}</small></h5> 
+                            {{ comment.body }}
+                            </div>
+                        </div>
+                        <hr>
+                    {% endfor %}
+                {% endif %}
+            </div>
 
-        <!-- Watchlist -->
-        {% if not is_watchlist %}
-            <br>
-            <a href="{% url 'watchlist-add' listing.id %}">Add to Watchlist</a>
-            <br>
-        {% else %}
-            <br>
-            <a href="{% url 'watchlist-remove' listing.id %}">Remove from Watchlist</a>
-            <br>
-        {% endif %}
-    
-    <!-- Closed Auction -->
-    {% else %}
-        {% if listing.get_winner %}
-            {% if listing.get_winner == user%}
-                <strong>Congratulations, {{ user }}! You won the auction!</strong><br>
-            {% endif %}
-                <strong>Sold for: ${{ listing.get_current_bid }}</strong>
-        {% else %}
-            <strong>This listing is closed.</strong>
-        {% endif %}
+            <!-- Sidebar Column -->
+            <div class="col-md-4">
 
-    {% endif %}
-    
-    
-        <hr>
-    <!-- Comment Section -->
-    <h2>Comments</h2>
-    <br>
-    {% if not listing.comments.all %}
-    No comments yet... <a href="#">Add one</a>
-    {% else %}
-    {% for comment in  listing.comments.all %}
-    <strong>{{ comment.user }} - 
-        {{ comment.posted_date }}
-    </strong>
-    <br>
-    {{ comment.body }}
-    <br><br>
-    <hr>
-    {% endfor %}
-    {% endif %}
+                <!-- Alert -->
+                {% if not user.is_authenticated %}
+                    <div class="alert alert-primary mt-6" role="alert">
+                        Want to make a bid? <br>
+                        <strong><a href="{% url 'login' %}">Sign In</a></strong> or 
+                        <strong><a href="{% url 'register' %}">Create Account</a></strong>
+                    </div>
+                {% endif %}
 
-    <!-- Comment Form -->
-    <form action="{% url 'listing-comment' listing.id %}" method="POST">
-        {% csrf_token %}
-        {% crispy comment-form %}
-    </form>
-    <br><br>
+                <!-- Widget -->
+                {% if listing.is_active %}
+
+                    <!-- Price & Bids -->
+                    <div class="card mt-6">
+                        <div class="card-header bg-custom">
+                            Bids
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Starting price: ${{ listing.start_price }}</li>
+                            <li class="list-group-item">Current bid: <strong>${{ listing.get_current_bid }}</li>
+                        </ul>
+                    </div>
+
+                    <!-- Bid Form -->
+                    {% if user != listing.seller %}
+                    <div class="card mt-2">
+                        <div class="card-header bg-custom">
+                            Place Bid
+                        </div>
+                        <div class="card-body px-0">
+                            <form action="{% url 'listing-bid' listing.id %}" method="POST">
+                                {% csrf_token %}
+                                {% crispy bid-form %}
+                            </form>
+                        </div>
+                    </div>
+
+
+                    {% endif %}
+
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+
 {% endblock body %}
