@@ -1,4 +1,4 @@
-{% extends "auctions/layout-listing.html" %}
+{% extends "auctions/layout.html" %}
 {% load static %}
 
 {% block title %}
@@ -6,33 +6,40 @@
 {% endblock title %}
 
 
-{% block category %}
+{% block body %}
+    <div class="content">
+        <div class="row">
+            <div class="sidebar col-3">
+                    {% include 'auctions/sidebar.html' %}
+            <div class="main col-9">
+                <div class="active-listings">
+                    <div class="row">
+                        {% for listing in listings  %}
+                        <div class="col-sm-12 col-md-6 col-lg-3 d-flex pb-3">
+                            <div class="card-deck">
+                                <div class="card">
+                                    <a href="{% url 'listing-detail' listing.id %}" class="stretched-link">
+                                        <img src="{{ listing.image_url }}" class="card-img-top" alt="{{ listing.name }}"></a>
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title text-center">{{ listing.title }}</h5>
+                                        <strong class="card-text price text-center">${{ listing.get_current_bid }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>     
+{% endblock body %}
+
+<!-- {% block category %}
     {% for category in categories %}
         <p class="text-center">
             <a href="{% url 'category-list' category.id %}" class="">{{ category }}</a>
         </p>
     {% endfor %}
-{% endblock %}
+{% endblock %} -->
 
-
-{% block body %}
-    <div class="active-listings">
-        <div class="row">
-            {% for listing in listings  %}
-            <div class="col-sm-12 col-md-6 col-lg-3 d-flex pb-3">
-                <div class="card-deck">
-                    <div class="card">
-                        <a href="{% url 'listing-detail' listing.id %}" class="stretched-link">
-                            <img src="{{ listing.image_url }}" class="card-img-top" alt="{{ listing.name }}"></a>
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title text-center">{{ listing.title }}</h5>
-                            <strong class="card-text price text-center">${{ listing.get_current_bid }}</strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-    
-{% endblock %}

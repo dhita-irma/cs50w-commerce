@@ -6,6 +6,10 @@
     Auctions
 {% endblock title %}
 
+{% block carousel %}
+    {% include 'auctions/carousel.html' %}
+{% endblock %}
+
 {% block body %}
 <div class="content p-4">
 
@@ -64,6 +68,5 @@
         </a>
     </div>
 
-
 </div> 
-    {% endblock body%}
+{% endblock body%}

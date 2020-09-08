@@ -1,0 +1,35 @@
+<div class="sidebar-box">
+    <div class="section">
+        <hr>
+        <a href="{% url 'active' %}">
+            <h4 class="text-center">All Listings</h4>
+        </a>
+        <hr>
+    </div>
+    <div class="section">
+        <hr>
+        <a href="{% url 'category-index' %}">
+            <h4 class="text-center">Categories</h4>
+        </a>
+        <hr>
+        {% block category %}
+            
+        {% endblock %}
+    </div>
+    <br>
+    <div class="section">
+        <hr>
+        <a href="{% url 'watchlist' %}">
+            <h4 class="text-center">My Watchlist</h4>
+        </a>
+        <hr>
+    </div>
+    <div class="section">
+        <hr>
+        <a href="{% url 'listing-create' %}">
+            <h4 class="text-center">Create Listing</h4>
+        </a>
+        <hr>
+    </div>
+</div>
+</div>
