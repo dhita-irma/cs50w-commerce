@@ -120,6 +120,13 @@ body {
     padding-bottom: 200px;
 }
 
+/* Comments */
+.small-muted {
+    color: lightslategrey;
+    font-weight: 400;
+    font-size: 70%;
+}
+
 /* Sidebar */
 
 .mt-6 {

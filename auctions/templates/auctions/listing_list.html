@@ -2,16 +2,21 @@
 {% load static %}
 
 {% block title %}
-    Auctions: Active Listings
+    {{ title }}
 {% endblock title %}
 
 
 {% block body %}
     <div class="content">
         <div class="row">
+
+            <!-- Sidebar -->
             <div class="sidebar col-3">
                     {% include 'auctions/sidebar.html' %}
+            
+            <!-- Main -->
             <div class="main col-9">
+                <h2 class="text-center mt-4">{{ title }}</h2>
                 <div class="active-listings">
                     <div class="row">
                         {% for listing in listings  %}

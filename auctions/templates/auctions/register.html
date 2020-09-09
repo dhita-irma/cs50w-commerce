@@ -14,16 +14,16 @@
                 <form action="{% url 'register' %}" method="post">
                     {% csrf_token %}
                     <div class="form-group">
-                        <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+                        <input class="form-control" autofocus type="text" name="username" placeholder="Username" autocomplete="off">
                     </div>
                     <div class="form-group">
-                        <input class="form-control" type="email" name="email" placeholder="Email Address">
+                        <input class="form-control" type="email" name="email" placeholder="Email Address" autocomplete="off">
                     </div>
                     <div class="form-group">
-                        <input class="form-control" type="password" name="password" placeholder="Password">
+                        <input class="form-control" type="password" name="password" placeholder="Password" autocomplete="off">
                     </div>
                     <div class="form-group">
-                        <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+                        <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password" autocomplete="off">
                     </div>
                     <input class="btn btn-primary" type="submit" value="Register">
                 </form>
@@ -33,8 +33,5 @@
             </div>
         </div>
     </div>
-
-
-
 
 {% endblock %}

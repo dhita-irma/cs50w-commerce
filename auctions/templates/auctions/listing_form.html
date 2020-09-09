@@ -2,10 +2,19 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
-    <h1 style="text-align: center;">Create New Listing</h1>
 
-    <form action="{% url 'listing-create' %}" method="POST">
-        {% csrf_token %}
-        {% crispy form %}
-    </form>
+<div class="container main" style="padding-bottom: 450px;">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 mt-6">
+            <h1 class="text-center mb-4">Create New Listing</h1>
+
+            <form action="{% url 'listing-create' %}" method="POST">
+                {% csrf_token %}
+                {% crispy form %}
+            </form>
+        </div>
+    </div>
+</div>
+
+
 {% endblock body %}

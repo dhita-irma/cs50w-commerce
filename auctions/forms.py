@@ -16,10 +16,9 @@ class ListingForm(forms.ModelForm):
                 Field('title', placeholder='Enter Listing Title', autocomplete='off'),
                 Field('description', placeholder='Listing Description'),
                 Field('start_price', placeholder='Set Starting Price', autocomplete='off'),
-                Field('image_url', placeholder='Enter Image URL'),
+                Field('image_url', placeholder='Enter Image URL', autocomplete='off'),
                 Field('category', placeholder='Select Category'),
                 Submit('submit', 'Save Listing', css_class='btn btn-primary float-left'),
-                css_class='form-group col-sm-12 col-lg-8 offset-lg-2'
             )
         )
 

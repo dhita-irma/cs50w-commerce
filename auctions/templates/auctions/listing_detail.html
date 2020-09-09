@@ -50,7 +50,7 @@
                         <div class="media mb-4">
                             <img src="http://placehold.it/50x50" alt="" class="d-flex mr-3 rounded-circle">
                             <div class="media-body">
-                            <h5 class="mt-0">{{ comment.user }} <small class="text-muted">{{ comment.posted_date }}</small></h5> 
+                            <h5 class="mt-0">{{ comment.user }} <span class="small-muted">{{ comment.posted_date }}</span></h5> 
                             {{ comment.body }}
                             </div>
                         </div>
@@ -69,13 +69,15 @@
                         <strong><a href="{% url 'login' %}">Sign In</a></strong> or 
                         <strong><a href="{% url 'register' %}">Create Account</a></strong>
                     </div>
+                {% else %}
+                    <div class="mt-6"></div>
                 {% endif %}
 
                 <!-- Active Listing -->
                 {% if listing.is_active %}
 
                     <!-- Price & Bids -->
-                    <div class="card mt-6">
+                    <div class="card">
                         <div class="card-header bg-custom text-center">
                             <b>Bid</b>
                         </div>

@@ -35,6 +35,7 @@ def active_listing(request):
 
     return render(request, 'auctions/listing_list.html', {
         "listings": listings,
+        "title": "Active Listings",
     })
 
 
