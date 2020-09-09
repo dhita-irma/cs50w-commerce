@@ -115,6 +115,11 @@ body {
     height: 40px;
 }
 
+.main {
+    background-color: white;
+    padding-bottom: 200px;
+}
+
 /* Sidebar */
 
 .mt-6 {
@@ -140,6 +145,34 @@ body {
     margin-left: 5px;
     margin-right: 20px;
 }
+
+.btn-secondary {
+    border-radius: 25px;
+}
+
+.price {
+    font-weight: 700;
+    font-size: 125%;
+    color: green;
+}
+
+/* ---FOOTER ---*/
+footer {
+    background-color: lightgray;
+    color: black;
+    padding-top: 10px;
+  }
+  
+  footer h4 {
+    color: black;
+  }
+  
+  footer .light {
+    border-top: 1px solid darkgray;
+    width: 75%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 
 @media(max-width:768px) {
     .sidebar {

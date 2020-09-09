@@ -88,7 +88,8 @@ class ListingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 def listing_detail(request, pk):
     listing = Listing.objects.get(pk=pk)
-    # bids = Bid.objects.filter(listing=pk)
+    listing_categories = listing.category.all()
+
     user = request.user
 
     # Check if current listing is in user.watchlist
@@ -97,11 +98,13 @@ def listing_detail(request, pk):
         if user.watchlist.filter(pk=pk).exists():
             is_watchlist = True
 
+
     return render(request, 'auctions/listing_detail.html', {
         'bid-form': forms.BidForm(),
         'comment-form': forms.CommentForm(),
         'is_watchlist': is_watchlist,
         'listing': listing,
+        'listing_categories': listing_categories,
         'user': user
     })
 
@@ -119,7 +122,8 @@ def listing_bid(request, pk):
                     bid = Bid(listing=listing, user=request.user, price=price)
                     bid.save()
                     return redirect(reverse('listing-detail', args=[pk]))
-                return HttpResponse("Invalid price")
+                else:
+                    return HttpResponse("Invalid price.")
     else: 
         return render(request, 'auctions/error.html')
 
@@ -230,11 +234,9 @@ def watchlist_add(request, pk):
     user.save()
 
     listings = Listing.objects.filter(added_by=request.user.id)
-    return render(request, "auctions/listing_list.html", {
-        "listings": listings
-    })
+    return redirect(reverse('listing-detail', args=[pk]))
 
 def watchlist_remove(request, pk):
     user = request.user
     user.watchlist.remove(pk)
-    return redirect(reverse('watchlist'))
+    return redirect(reverse('listing-detail', args=[pk]))
