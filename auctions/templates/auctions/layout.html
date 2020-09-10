@@ -10,47 +10,9 @@
     </head>
     <body>
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-custom sticky-top">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
-            aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-        
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <div class="navbar-nav">
-                    <a class="nav-item nav-link " href="{% url 'index' %}">HOME</a>
-                    <a class="nav-item nav-link " href="{% url 'active' %}">LISTINGS</a>
-                    <a class="nav-item nav-link" href="{% url 'category-index' %}">CATEGORY</a>
-                </div>
-                    
-                <div class="nav-item ml-auto">
-                    <a class="navbar-brand" href="{% url 'index' %}">
-                        <div class="brand">Auctions</div>
-                    </a>
-                </div>
-
-                <ul class="navbar-nav ml-auto">
-                    {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a href="{% url 'watchlist' %}" class="nav-link">WATCHLIST</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                {{ user.username }}
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'logout' %}">LOGOUT</a>
-                            </div>
-                        </li>
-
-                    {% else %}
-                        <a class="nav-item nav-link " href="{% url 'login' %}">LOGIN</a>
-                        <a class="nav-item nav-link" href="{% url 'register' %}">CREATE ACCOUNT</a>
-                    {% endif %}
-                </ul>
-            </div>    
-        </nav>
+        {% block navbar%}
+            {% include 'auctions/navbar.html' %}
+        {% endblock %}
 
         <!-- Carousel -->
         {% block carousel %} {% endblock %}
