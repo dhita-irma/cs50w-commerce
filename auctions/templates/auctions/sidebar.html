@@ -1,37 +1,38 @@
 <div class="sidebar-box">
-    <div class="section">
-        <hr>
+    <div class="section pb-4">
         <a href="{% url 'active' %}">
-            <h4 class="text-center">Active Listings</h4>
+            <h4 class="">Active Listings</h4>
         </a>
-        <hr>
+        
     </div>
-    <div class="section">
-        <hr>
+    <div class="section pb-1">
         <a href="{% url 'category-index' %}">
-            <h4 class="text-center">Categories</h4>
+            <h4 class="">Categories</h4>
         </a>
-        <hr>
+        
         {% for category in categories %}
-            <p class="text-center">
+            <p class="pl-3">
                 <a href="{% url 'category-list' category.id %}" class="">{{ category }}</a>
             </p>
         {% endfor %}
     </div>
-    <br>
-    <div class="section">
-        <hr>
-        <a href="{% url 'watchlist' %}">
-            <h4 class="text-center">My Watchlist</h4>
-        </a>
-        <hr>
-    </div>
-    <div class="section">
-        <hr>
+    <div class="section pb-4">
+        
         <a href="{% url 'listing-create' %}">
-            <h4 class="text-center">Create Listing</h4>
+            <h4 class="">Create Listing</h4>
         </a>
-        <hr>
+        
     </div>
-</div>
+    <div class="section pb-4">
+        <a href="{% url 'my-listings' %}">
+            <h4 class="">My Listings</h4>
+        </a>
+        
+    </div>
+    <div class="section pb-4">
+        <a href="{% url 'watchlist' %}">
+            <h4 class="">My Watchlist</h4>
+        </a>
+        
+    </div>
 </div>

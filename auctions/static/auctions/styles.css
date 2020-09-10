@@ -8,12 +8,16 @@
 /* Import font from Google Font  */
 
 :root {
-    --primary-color: #5bc0de;
+    /* --primary-color: #5bc0de; */
+    --primary-color: #343a40;
+    --secondary-color: #439efa;
+    --hover-color: #90c1f1;
 }
 
 /* Navigation Bar */
 .bg-custom {
     background-color: var(--primary-color);
+    border-bottom-width: 3px;
 }
 
 .navbar-nav {
@@ -45,8 +49,61 @@
     padding-bottom: 10px;
 }
 
-.btn-info {
-    border-radius: 25px;
+/* Buttons */
+.btn-outline-custom {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color)
+  }
+  
+.btn-outline-custom:hover {
+    background: var(--secondary-color);
+    color: white;
+  }
+
+.btn-custom {
+    background: var(--secondary-color);
+    color: white;
+    border-radius: 5px;
+}
+
+.btn-custom:hover {
+    background: var(--hover-color);
+    color: white;
+}
+
+.bidform .btn-primary {
+    border-color: var(--secondary-color);
+    color: var(--secondary-color);
+    background: white;
+}
+
+.bidform .btn-primary:hover {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.bidform .btn-primary:active {
+    background: var(--secondary-color)!important;
+    color: white!important;
+}
+
+
+.comment-form .btn-primary {
+    background: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: white;
+}
+
+.comment-form .btn-primary:hover {
+    background: var(--hover-color);
+}
+
+.comment-form .btn-primary:active {
+    background: var(--secondary-color)!important;
+    color: white!important;
+}
+.btn-rounded {
+    border-radius: 20px;
 }
 
 /* Popular Categories */
@@ -105,6 +162,10 @@ body {
     object-fit: cover;
 }
 
+.card {
+    border: 0px;
+}
+
 .price {
     font-size: 20px;
     color: var(--primary-color);
@@ -133,12 +194,9 @@ body {
     margin-top: 80px;
 }
 
-.sidebar-box {
-    margin-left: 20px;
-    margin-top: 20px;
-    padding: 5px;
-    padding-top: 5px;
-    height: 5000px;
+.card-header {
+    color: white;
+    font-weight: 200px;
 }
 
 .section a {
@@ -151,10 +209,6 @@ body {
     margin-top: 30px;
     margin-left: 5px;
     margin-right: 20px;
-}
-
-.btn-secondary {
-    border-radius: 25px;
 }
 
 .price {

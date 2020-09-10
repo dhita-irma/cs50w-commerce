@@ -43,7 +43,7 @@ class CommentForm(forms.ModelForm):
             Div(
                 Field('body', placeholder='Enter your comment here', row="3"),
                 Submit('submit', 'Send', css_class='btn btn-primary float-left'),
-                css_class='form-group'
+                css_class='form-group comment-form'
             )
         )
         self.fields['body'].widget.attrs['rows'] = 4
@@ -64,9 +64,9 @@ class BidForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
-                Field('price', css_class='form-group mx-sm-3 mb-2'),
-                Submit('submit', 'Place Bid', css_class='btn btn-primary float-left mb-2'),
-                css_class='form-inline'
+            Field('price', css_class='mx-sm-3 mb-2'),
+            Submit('submit', 'Place Bid', css_class='mb-2'),
+            css_class="form-group bidform"
             )
         )
         self.helper.form_show_labels = False

@@ -78,9 +78,7 @@
 
                     <!-- Price & Bids -->
                     <div class="card">
-                        <div class="card-header bg-custom text-center">
-                            <b>Bid</b>
-                        </div>
+                        <h5 class="card-header bg-custom text-center">Bid</h5>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">
                                 <h4>
@@ -94,16 +92,19 @@
                     <!-- Bid Form -->
                     {% if user != listing.seller %}
                         <div class="card mt-4">
-                            <div class="card-header bg-custom text-center">
-                                <b>Place Bid</b>
-                            </div>
+                            <h5 class="card-header bg-custom text-center">Place Bid</h5>
                             <div class="card-body px-0">
                                 {% if alert %}
                                     <div class="alert alert-primary" role="alert">
                                         {{ alert }}
                                     </div>
                                 {% endif %}
-                                <form action="{% url 'listing-bid' listing.id %}" method="POST">
+                                <!-- <form action="{% url 'listing-bid' listing.id %}" method="POST" class="form-inline">
+                                    {% csrf_token %}
+                                    <input type="number" class="form-control mb-2 mr-sm-2 ml-3" id="price">
+                                    <button class="btn btn-outline-danger mb-2">Place Bid</button>
+                                </form> -->
+                                <form action="{% url 'listing-bid' listing.id %}" method="POST" class="form-inline">
                                     {% csrf_token %}
                                     {% crispy bid-form %}
                                 </form>
@@ -126,11 +127,11 @@
                         {% if user != listing.seller %}
                             {% if not is_watchlist %}
                                 <a href="{% url 'watchlist-add' listing.id %}">
-                                    <button type="submit" class="btn btn-info btn-block">Add to Watchlist</button>
+                                    <button type="submit" class="btn btn-custom btn-block btn-rounded">Add to Watchlist</button>
                                 </a>
                             {% else %}
                                 <a href="{% url 'watchlist-remove' listing.id %}">
-                                    <button type="submit" class="btn btn-secondary btn-block">Remove from Watchlist</button>
+                                    <button type="submit" class="btn btn-secondary btn-block btn-rounded">Remove from Watchlist</button>
                                 </a>
                             {% endif %}
                         {% endif%}
