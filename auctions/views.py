@@ -219,12 +219,21 @@ def category_list(request, category):
     except:
         return render(request, "auctions/error.html")
 
+@login_required(login_url='/login/')
+def my_listings(request):
+    my_listings = Listing.objects.filter(seller=request.user)
+    return render(request, "auctions/listing_list.html", {
+        "listings": my_listings,
+        "title": "My Listings"
+    })
+
 
 @login_required(login_url='/login/')
 def watchlist_view(request):
     watchlist = Listing.objects.filter(added_by=request.user.id)
     return render(request, "auctions/listing_list.html", {
-        "listings": watchlist
+        "listings": watchlist,
+        "title": "My Watchlist"
     })
 
 @login_required(login_url='/login/')
