@@ -1,10 +1,5 @@
 <div class="sidebar-box">
-    <div class="section pb-4">
-        <a href="{% url 'active' %}">
-            <h4 class="">Active Listings</h4>
-        </a>
-        
-    </div>
+
     <div class="section pb-1">
         <a href="{% url 'category-index' %}">
             <h4 class="">Categories</h4>
@@ -15,13 +10,6 @@
                 <a href="{% url 'category-list' category.id %}" class="">{{ category }}</a>
             </p>
         {% endfor %}
-    </div>
-    <div class="section pb-4">
-        
-        <a href="{% url 'listing-create' %}">
-            <h4 class="">Create Listing</h4>
-        </a>
-        
     </div>
     <div class="section pb-4">
         <a href="{% url 'my-listings' %}">

@@ -7,17 +7,54 @@
 
 
 {% block body %}
-    <div class="content">
-        <div class="row">
+<div class="container main">
+    
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="sidebar col-lg-3">
+            {% include 'auctions/sidebar.html' %}
+        </div>
+    
+        <!-- Listings -->
+        <div class="col-lg-9">
+            <h2 class="text-center pb-3">{{ title }}</h2>
+            
+            <!-- Cards -->
+            <div class="row">
 
-            <!-- Sidebar -->
-            <div class="sidebar col-2">
-                    {% include 'auctions/sidebar.html' %}
+                {% for listing in listings %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <a href="{% url 'listing-detail' listing.id %}"><img class="card-img-top" src="{{ listing.image_url }}" alt=""></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="{% url 'listing-detail' listing.id %}">{{ listing.title }}</a>
+                            </h4>
+                            <h5>${{ listing.get_current_bid }}</h5>
+                            <p class="card-text">{{ listing.description }}
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">By {{ listing.seller }} on {{ listing.created_date }}</small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            
+                
+            
             </div>
+            <!-- /.row -->
+    
+          </div>
+          <!-- /.col-lg-9 -->
 
-            <!-- Main -->
-            <div class="main col-10 px-5">
-                <h2 class="text-center mt-4">{{ title }}</h2>
+    </div>
+    <!-- /.row -->
+        
+        <!-- Main -->
+            <!-- <div class="col-lg-9">
+                <h2 class="text-center">{{ title }}</h2>
                 <div class="active-listings">
                     <div class="row">
                         {% for listing in listings  %}
@@ -36,16 +73,7 @@
                         {% endfor %}
                     </div>
                 </div>
-            </div>
-        </div>
+            </div> -->
     </div>     
 {% endblock body %}
-
-<!-- {% block category %}
-    {% for category in categories %}
-        <p class="text-center">
-            <a href="{% url 'category-list' category.id %}" class="">{{ category }}</a>
-        </p>
-    {% endfor %}
-{% endblock %} -->
 
