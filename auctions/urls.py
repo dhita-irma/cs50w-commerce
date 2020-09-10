@@ -14,11 +14,9 @@ urlpatterns = [
     path("logout/", views.logout_view, name="logout"),
     path("register/", views.register, name="register"),
     
-    # path("listing/", ActiveListingView.as_view(), name="active"),
     path("listing/", views.active_listing, name="active"),
     path("listing/new/", ListingCreateView.as_view(), name="listing-create"),
     path("listing/<int:pk>/", views.listing_detail, name="listing-detail"),
-    path("listing/<int:pk>/update/", ListingUpdateView.as_view(), name="listing-update"),
     path("listing/<int:pk>/delete/", ListingDeleteView.as_view(), name="listing-delete"),
     path("listing/<int:pk>/bid/", views.listing_bid, name="listing-bid"),
     path("listing/<int:pk>/comment/", views.listing_comment, name="listing-comment"),

@@ -9,7 +9,7 @@
 
 :root {
     /* --primary-color: #5bc0de; */
-    --primary-color: #343a40;
+    --primary-color: #439efa;
     --secondary-color: #439efa;
     --hover-color: #90c1f1;
 }
@@ -167,13 +167,23 @@ body {
     object-fit: cover;
 }
 
-.card {
+.no-border {
     border: 0px;
 }
 
+.card-footer {
+    background-color: white;
+}
+
+.listing-sidebar .card-header {
+    padding-top: 6px;
+    padding-bottom: 8px;
+}
+
 .price {
-    font-size: 20px;
-    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 30px;
+    color: green;
 }
 
 .show-btn {
@@ -214,12 +224,6 @@ body {
     margin-top: 30px;
     margin-left: 5px;
     margin-right: 20px;
-}
-
-.price {
-    font-weight: 700;
-    font-size: 125%;
-    color: green;
 }
 
 /* ---FOOTER ---*/

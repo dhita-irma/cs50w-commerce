@@ -9,13 +9,19 @@
 {% block body %}
 
     <!-- Page Content -->
-    <div class="container main">
+    <div class="container" style="background-color: white;">
         <div class="row">
             <!-- Listing Column -->
             <div class="col-lg-8">
 
                 <!-- Listing Information -->
-                <h1 class="mt-4">{{ listing.title }}</h1>
+                <h1 class="text-center mt-4">{{ listing.title }}</h1>
+
+                <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="img-fluid img-thumbnail rounded mx-auto d-block mt-3">
+                
+                <p class="mt-4">{{ listing.description }}</p>
+                <p class="mt-4">Starting price: ${{ listing.start_price }}</p>
+                
                 <hr>
                 <small>Listed by {{ listing.seller }}</small>
                 <small>on {{ listing.created_date }}</small> <br>
@@ -26,10 +32,6 @@
                         </a>
                     {% endfor %}
                 </small>
-
-                <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="img-fluid img-thumbnail rounded mx-auto d-block mt-3">
-                <p class="lead mt-4">{{ listing.description }}</p>
-                <hr>
 
                 <!-- Comments Form -->
                 <div class="card my-4">
@@ -44,10 +46,12 @@
 
                 <!-- Comment Section -->
                 {% if not listing.comments.all %}
-                    No comments yet... 
+                    <div class="mb-5">
+                        No comments yet... 
+                    </div>
                 {% else %}
                     {% for comment in  listing.comments.all %}
-                        <div class="media mb-4">
+                        <div class="media">
                             <img src="http://placehold.it/50x50" alt="" class="d-flex mr-3 rounded-circle">
                             <div class="media-body">
                             <h5 class="mt-0">{{ comment.user }} <span class="small-muted">{{ comment.posted_date }}</span></h5> 
@@ -77,41 +81,22 @@
                 {% if listing.is_active %}
 
                     <!-- Price & Bids -->
-                    <div class="card">
-                        <h5 class="card-header bg-custom text-center">Bid</h5>
+                    <div class="card listing-sidebar no-border">
+                        <h5 class="card-header no-border bg-custom text-center">Current Bid</h5>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">
-                                <h4>
-                                    Current bid <span style="color: green; font-weight: 750;">${{ listing.get_current_bid }}</span> 
-                                </h4>
+                                <h4 class="price text-center">${{ listing.get_current_bid }}</h4> 
                             </li>
-                            <li class="list-group-item">Starting price: ${{ listing.start_price }}</li>
-                        </ul>
-                    </div>
-
-                    <!-- Bid Form -->
-                    {% if user != listing.seller %}
-                        <div class="card mt-4">
-                            <h5 class="card-header bg-custom text-center">Place Bid</h5>
-                            <div class="card-body px-0">
-                                {% if alert %}
-                                    <div class="alert alert-primary" role="alert">
-                                        {{ alert }}
-                                    </div>
-                                {% endif %}
-                                <!-- <form action="{% url 'listing-bid' listing.id %}" method="POST" class="form-inline">
-                                    {% csrf_token %}
-                                    <input type="number" class="form-control mb-2 mr-sm-2 ml-3" id="price">
-                                    <button class="btn btn-outline-danger mb-2">Place Bid</button>
-                                </form> -->
+                            <li class="list-group-item pt-3">
                                 <form action="{% url 'listing-bid' listing.id %}" method="POST" class="form-inline">
                                     {% csrf_token %}
                                     {% crispy bid-form %}
                                 </form>
                                 <small class="px-3 text-muted">Bid must be at least ${{ listing.get_current_bid }}</small>
-                            </div>
-                        </div>
-                    {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+
 
                     <!-- Close Auction -->
                     {% if user == listing.seller %}
