@@ -7,7 +7,7 @@
 
 
 {% block body %}
-<div class="container main">
+<div class="container-fluid main">
     
     <div class="row">
         <!-- Sidebar -->
@@ -27,15 +27,15 @@
                     <div class="card no-border h-100 ">
                         <a href="{% url 'listing-detail' listing.id %}"><img class="card-img-top" src="{{ listing.image_url }}" alt=""></a>
                         <div class="card-body">
-                            <h4 class="card-title">
+                            <h5 class="card-title">
                                 <a href="{% url 'listing-detail' listing.id %}">{{ listing.title }}</a>
-                            </h4>
+                            </h5>
                             <h5>${{ listing.get_current_bid }}</h5>
                             <p class="card-text">{{ listing.description }}
                             </p>
                         </div>
                         <div class="card-footer">
-                            <small class="text-muted">By {{ listing.seller }} on {{ listing.created_date }}</small>
+                            <small class="text-muted">By {{ listing.seller }} | {{ listing.created_date | date:"F d, Y" }}  </small>
                         </div>
                     </div>
                 </div>
