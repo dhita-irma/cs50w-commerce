@@ -87,13 +87,20 @@
                             <li class="list-group-item">
                                 <h4 class="price text-center">${{ listing.get_current_bid }}</h4> 
                             </li>
+                            {% if user != listing.seller %}
                             <li class="list-group-item pt-3">
                                 {% if messages %}
-                                <div class="alert alert-warning text-center" role="alert">
                                     {% for message in messages %}
-                                        {{ message }}
+                                        {% if message.tags == 'success' %}
+                                        <div class="alert alert-success text-center" role="alert">
+                                            {{ message }}
+                                        </div>
+                                        {% else %}
+                                        <div class="alert alert-danger text-center" role="alert">
+                                            {{ message }}
+                                        </div>
+                                        {% endif %}
                                     {% endfor %}
-                                </div>
                                 {% endif %}
                                 <form action="{% url 'listing-bid' listing.id %}" method="POST" class="form-inline">
                                     {% csrf_token %}
@@ -101,6 +108,7 @@
                                 </form>
                                 <small class="px-3 text-muted">Bid must be at least ${{ listing.get_current_bid }}</small>
                             </li>
+                            {% endif %}
                         </ul>
                     </div>
 

@@ -78,10 +78,10 @@ def listing_bid(request, pk):
                 if price > listing.get_current_bid():
                     bid = Bid(listing=listing, user=request.user, price=price)
                     bid.save()
-                    messages.add_message(request, messages.INFO, "Bid succesfully placed.")
+                    messages.success(request, 'Bid successfully added.')
                     return redirect(reverse('listing-detail', args=[pk]))
                 else:
-                    messages.add_message(request, messages.INFO, "Oops. Bid can't be lower than the current bid.")
+                    messages.error(request, "Oops. Your bid can't be lower than the current one.")
                     return redirect(reverse('listing-detail', args=[pk]))
     else: 
         return render(request, 'auctions/error.html')
