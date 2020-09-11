@@ -24,7 +24,7 @@
 
                 {% for listing in listings %}
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card no-border h-100 ">
+                    <div class="card no-border h-100 shadow-sm bg-white rounded">
                         <a href="{% url 'listing-detail' listing.id %}"><img class="card-img-top" src="{{ listing.image_url }}" alt=""></a>
                         <div class="card-body">
                             <h5 class="card-title">

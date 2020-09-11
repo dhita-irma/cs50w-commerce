@@ -39,19 +39,6 @@ def active_listing(request):
     })
 
 
-class ListingDeleteView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
-    model = Listing
-
-    def test_func(self):
-        # Get the current listing object
-        listing = self.get_object()
-
-        # Check if current user is the seller of listing
-        if self.request.user == listing.seller:
-            return True
-        return False 
-
-
 class ListingCreateView(LoginRequiredMixin, CreateView):
     model = Listing
     form_class = forms.ListingForm
@@ -62,29 +49,6 @@ class ListingCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.seller = self.request.user
         return super().form_valid(form) 
-
-
-class ListingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Listing
-    form_class = forms.ListingForm
-    login_url = '/login/'
-    # TODO: redirect user back to /listing/new/ after login
-
-    # Set listing's seller to current logged-in user 
-    def form_valid(self, form):
-        form.instance.seller = self.request.user
-        return super().form_valid(form) 
-
-    def test_func(self):
-        # Get the current listing object
-        listing = self.get_object()
-
-        # Check if current user is the seller of listing
-        if self.request.user == listing.seller:
-            return True
-        return False 
-
-
 
 
 def listing_detail(request, pk):
@@ -213,8 +177,9 @@ def category_list(request, category):
     try:
         category = Category.objects.get(name=category)
         filtered_listings = Listing.objects.filter(category=category.id)
-        return render(request, "auctions/category_list.html", {
-            "filtered_listings": filtered_listings
+        return render(request, "auctions/listing_list.html", {
+            "title": category,
+            "listings": filtered_listings,
         })     
     except:
         return render(request, "auctions/error.html")

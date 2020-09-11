@@ -7,7 +7,7 @@
         
         {% for category in categories %}
             <p class="pl-3">
-                <a href="{% url 'category-list' category.id %}" class="">{{ category }}</a>
+                <a href="{% url 'category-list' category %}" class="">{{ category }}</a>
             </p>
         {% endfor %}
     </div>

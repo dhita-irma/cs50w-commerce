@@ -1,11 +1,6 @@
 from django.urls import path
 
-from .views import (
-    # ActiveListingView, 
-    ListingCreateView,
-    ListingUpdateView,
-    ListingDeleteView,
-)
+from .views import ListingCreateView
 from . import views
 
 urlpatterns = [
@@ -17,7 +12,6 @@ urlpatterns = [
     path("listing/", views.active_listing, name="active"),
     path("listing/new/", ListingCreateView.as_view(), name="listing-create"),
     path("listing/<int:pk>/", views.listing_detail, name="listing-detail"),
-    path("listing/<int:pk>/delete/", ListingDeleteView.as_view(), name="listing-delete"),
     path("listing/<int:pk>/bid/", views.listing_bid, name="listing-bid"),
     path("listing/<int:pk>/comment/", views.listing_comment, name="listing-comment"),
     path("listing/<int:pk>/close/", views.listing_close, name="listing-close"),
