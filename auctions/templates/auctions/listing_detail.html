@@ -112,11 +112,11 @@
                         {% if user != listing.seller %}
                             {% if not is_watchlist %}
                                 <a href="{% url 'watchlist-add' listing.id %}">
-                                    <button type="submit" class="btn btn-custom btn-block btn-rounded">Add to Watchlist</button>
-                                </a>
+                                    <button type="button" class="btn btn-custom btn-block btn-rounded">Add to Watchlist</button>
+                                </a>z
                             {% else %}
                                 <a href="{% url 'watchlist-remove' listing.id %}">
-                                    <button type="submit" class="btn btn-outline-custom btn-block btn-rounded">Remove from Watchlist</button>
+                                    <button type="button" class="btn btn-outline-custom btn-block btn-rounded">Remove from Watchlist</button>
                                 </a>
                             {% endif %}
                         {% endif%}
