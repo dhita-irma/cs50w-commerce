@@ -5,7 +5,7 @@
     --primary-color: #439efa;
     --secondary-color: #439efa;
     --footer-color: lightgray;
-    --hover-color: #90c1f1;
+    --hover-color: #2f89e2;
 }
 
 body {
@@ -25,6 +25,10 @@ body {
 .navbar-nav {
     font-size: 1.08em;
     font-weight: 600;
+}
+
+.navbar-nav .active {
+    border-bottom: 3px solid black;
 }
 
 .navbar-brand {
@@ -77,6 +81,7 @@ nav .btn-custom {
 .btn-custom:hover {
     background: var(--hover-color);
     color: white;
+    border-color: var(--hover-color);
 }
 
 .bidform .btn-primary {
