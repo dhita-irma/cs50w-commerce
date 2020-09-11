@@ -1,0 +1,24 @@
+<div class="sidebar-box">
+
+    <div class="section pb-1">
+        <h4 class="">Categories</h4>
+        
+        {% for category in categories %}
+            <p class="pl-3">
+                <a href="{% url 'category-list' category %}" class="">{{ category }}</a>
+            </p>
+        {% endfor %}
+    </div>
+    <div class="section pb-4">
+        <a href="{% url 'my-listings' %}">
+            <h4 class="">My Listings</h4>
+        </a>
+        
+    </div>
+    <div class="section pb-4">
+        <a href="{% url 'watchlist' %}">
+            <h4 class="">My Watchlist</h4>
+        </a>
+        
+    </div>
+</div>

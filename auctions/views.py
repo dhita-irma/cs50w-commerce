@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -7,74 +8,45 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from django.views.generic import(
-    CreateView,
-    DeleteView,
-    DetailView, 
-    ListView, 
-    UpdateView,
-)
+from django.views.generic import CreateView
 
 from . import forms
 from .models import *
 
 
-class ActiveListingView(ListView):
-    queryset = Listing.objects.filter(is_active=True)
-    context_object_name = 'listings' 
+def index(request):
+    categories = Category.objects.all()
+    listings = Listing.objects.order_by('-created_date').all()
 
-    # Order listings from latest to oldest
-    ordering = ['-created_date'] 
+    return render(request, 'auctions/index.html', {
+        "user": request.user,
+        "listings":listings[:6]
+    })
+
+def active_listing(request):
+    listings = Listing.objects.filter(is_active=True).order_by('-created_date')
+
+    return render(request, 'auctions/listing_list.html', {
+        "listings": listings,
+        "title": "Active Listings",
+    })
+
 
 class ListingCreateView(LoginRequiredMixin, CreateView):
     model = Listing
     form_class = forms.ListingForm
     login_url = '/login/'
-    # TODO: redirect user back to /listing/new/ after login
 
     # Set listing's seller to current logged-in user 
     def form_valid(self, form):
         form.instance.seller = self.request.user
         return super().form_valid(form) 
-
-
-class ListingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Listing
-    form_class = forms.ListingForm
-    login_url = '/login/'
-    # TODO: redirect user back to /listing/new/ after login
-
-    # Set listing's seller to current logged-in user 
-    def form_valid(self, form):
-        form.instance.seller = self.request.user
-        return super().form_valid(form) 
-
-    def test_func(self):
-        # Get the current listing object
-        listing = self.get_object()
-
-        # Check if current user is the seller of listing
-        if self.request.user == listing.seller:
-            return True
-        return False 
-
-
-class ListingDeleteView(LoginRequiredMixin, UserPassesTestMixin,DeleteView):
-    model = Listing
-
-    def test_func(self):
-        # Get the current listing object
-        listing = self.get_object()
-
-        # Check if current user is the seller of listing
-        if self.request.user == listing.seller:
-            return True
-        return False 
 
 
 def listing_detail(request, pk):
     listing = Listing.objects.get(pk=pk)
-    # bids = Bid.objects.filter(listing=pk)
+    listing_categories = listing.category.all()
+
     user = request.user
 
     # Check if current listing is in user.watchlist
@@ -83,11 +55,13 @@ def listing_detail(request, pk):
         if user.watchlist.filter(pk=pk).exists():
             is_watchlist = True
 
+
     return render(request, 'auctions/listing_detail.html', {
         'bid-form': forms.BidForm(),
         'comment-form': forms.CommentForm(),
         'is_watchlist': is_watchlist,
         'listing': listing,
+        'listing_categories': listing_categories,
         'user': user
     })
 
@@ -104,8 +78,11 @@ def listing_bid(request, pk):
                 if price > listing.get_current_bid():
                     bid = Bid(listing=listing, user=request.user, price=price)
                     bid.save()
+                    messages.add_message(request, messages.INFO, "Bid succesfully placed.")
                     return redirect(reverse('listing-detail', args=[pk]))
-                return HttpResponse("Invalid price")
+                else:
+                    messages.add_message(request, messages.INFO, "Oops. Bid can't be lower than the current bid.")
+                    return redirect(reverse('listing-detail', args=[pk]))
     else: 
         return render(request, 'auctions/error.html')
 
@@ -184,28 +161,33 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
-def category_index(request):
-    categories = Category.objects.all()
-    return render(request, "auctions/category_index.html", {
-        "categories": categories
-    })
 
 def category_list(request, category):
     try:
         category = Category.objects.get(name=category)
         filtered_listings = Listing.objects.filter(category=category.id)
-        return render(request, "auctions/category_list.html", {
-            "filtered_listings": filtered_listings
+        return render(request, "auctions/listing_list.html", {
+            "title": category,
+            "listings": filtered_listings,
         })     
     except:
         return render(request, "auctions/error.html")
+
+@login_required(login_url='/login/')
+def my_listings(request):
+    my_listings = Listing.objects.filter(seller=request.user)
+    return render(request, "auctions/listing_list.html", {
+        "listings": my_listings,
+        "title": "My Listings"
+    })
 
 
 @login_required(login_url='/login/')
 def watchlist_view(request):
     watchlist = Listing.objects.filter(added_by=request.user.id)
     return render(request, "auctions/listing_list.html", {
-        "listings": watchlist
+        "listings": watchlist,
+        "title": "My Watchlist"
     })
 
 @login_required(login_url='/login/')
@@ -216,11 +198,9 @@ def watchlist_add(request, pk):
     user.save()
 
     listings = Listing.objects.filter(added_by=request.user.id)
-    return render(request, "auctions/listing_list.html", {
-        "listings": listings
-    })
+    return redirect(reverse('listing-detail', args=[pk]))
 
 def watchlist_remove(request, pk):
     user = request.user
     user.watchlist.remove(pk)
-    return redirect(reverse('watchlist'))
+    return redirect(reverse('listing-detail', args=[pk]))

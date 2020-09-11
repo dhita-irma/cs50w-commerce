@@ -1,86 +1,164 @@
-{% extends 'auctions/layout-listing.html' %}
+{% extends "auctions/layout.html" %}
 {% load crispy_forms_tags %}
 
+{% block title %}
+    {{ listing.title }}
+{% endblock title %}
+
+
 {% block body %}
-    <!-- Title -->
-    {% if listing.is_active %}
-        <h1>{{ listing.title }}</h1>
-    {% else %}
-        <h1>[CLOSED] {{ listing.title }}</h1>        
-    {% endif %}
 
-    <!-- Details -->
-    <small>By {{ listing.seller }} on {{ listing.created_date }}</small><br>
-    <img src="{{ listing.image_url }}" width="500px"><br>
-    <p>{{ listing.description }}</p>
-    <p>Price started: ${{ listing.start_price }}</p>
+    <!-- Page Content -->
+    <div class="container bg-white">
+        <div class="row" style="padding-bottom: 50px;">
+            <!-- Listing Column -->
+            <div class="col-lg-8">
 
-    <!-- Active Auction -->
-    {% if listing.is_active %}
-        <strong>Current bid: ${{ listing.get_current_bid }}</strong>
+                <!-- Listing Information -->
+                <h1 class="text-center mt-4">{{ listing.title }}</h1>
 
-        <!-- Bid Form -->
-        {% if user != listing.seller %}
-            <form action="{% url 'listing-bid' listing.id %}" method="POST">
-                {% csrf_token %}
-                {% crispy bid-form %}
-            </form>
-        {% endif %}
+                <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="img-fluid mx-auto d-block mt-3">
+                
+                <p class="desc mt-4">{{ listing.description }}</p>
+                <p class="mt-4">Starting price: ${{ listing.start_price }}</p>
+                
+                <hr>
+                <small>Listed by {{ listing.seller }}</small>
+                <small>on {{ listing.created_date }}</small> <br>
+                <small>Category: 
+                    {% for category in listing_categories %}
+                        <a href="{% url 'category-list' category %}">
+                            {{ category }}                        
+                        </a>
+                    {% endfor %}
+                </small>
 
-        <!-- Close Auction -->
-        {% if user == listing.seller %}
-            <form action="{% url 'listing-close' listing.id %}">
-                <button type="submit" class="btn btn-primary">Close Auction</button>
-            </form>      
-        {% endif %}
+                <!-- Comments Form -->
+                <div class="card my-4">
+                    <h5 class="card-header bg-custom">Leave a Comment:</h5>
+                    <div class="card-body">
+                        <form action="{% url 'listing-comment' listing.id %}" method="POST">
+                            {% csrf_token %}
+                            {% crispy comment-form %}
+                        </form>
+                    </div>
+                </div>
 
-        <!-- Watchlist -->
-        {% if not is_watchlist %}
-            <br>
-            <a href="{% url 'watchlist-add' listing.id %}">Add to Watchlist</a>
-            <br>
-        {% else %}
-            <br>
-            <a href="{% url 'watchlist-remove' listing.id %}">Remove from Watchlist</a>
-            <br>
-        {% endif %}
-    
-    <!-- Closed Auction -->
-    {% else %}
-        {% if listing.get_winner %}
-            {% if listing.get_winner == user%}
-                <strong>Congratulations, {{ user }}! You won the auction!</strong><br>
-            {% endif %}
-                <strong>Sold for: ${{ listing.get_current_bid }}</strong>
-        {% else %}
-            <strong>This listing is closed.</strong>
-        {% endif %}
+                <!-- Comment Section -->
+                {% if not listing.comments.all %}
+                    <div class="mb-5">
+                        No comments yet... 
+                    </div>
+                {% else %}
+                    {% for comment in  listing.comments.all %}
+                        <div class="media">
+                            <img src="http://placehold.it/50x50" alt="" class="d-flex mr-3 rounded-circle">
+                            <div class="media-body">
+                            <h5 class="mt-0">{{ comment.user }} <span class="small-muted">{{ comment.posted_date }}</span></h5> 
+                            {{ comment.body }}
+                            </div>
+                        </div>
+                        <hr>
+                    {% endfor %}
+                {% endif %}
+            </div>
 
-    {% endif %}
-    
-    
-        <hr>
-    <!-- Comment Section -->
-    <h2>Comments</h2>
-    <br>
-    {% if not listing.comments.all %}
-    No comments yet... <a href="#">Add one</a>
-    {% else %}
-    {% for comment in  listing.comments.all %}
-    <strong>{{ comment.user }} - 
-        {{ comment.posted_date }}
-    </strong>
-    <br>
-    {{ comment.body }}
-    <br><br>
-    <hr>
-    {% endfor %}
-    {% endif %}
+            <!-- Sidebar Column -->
+            <div class="col-md-4">
 
-    <!-- Comment Form -->
-    <form action="{% url 'listing-comment' listing.id %}" method="POST">
-        {% csrf_token %}
-        {% crispy comment-form %}
-    </form>
-    <br><br>
+                <!-- Alert -->
+                {% if not user.is_authenticated %}
+                    <div class="alert alert-primary mt-6" role="alert">
+                        Want to make a bid? <br>
+                        <strong><a href="{% url 'login' %}">Sign In</a></strong> or 
+                        <strong><a href="{% url 'register' %}">Create Account</a></strong>
+                    </div>
+                {% else %}
+                    <div class="mt-6"></div>
+                {% endif %}
+
+                <!-- IF Active Listing -->
+                {% if listing.is_active %}
+
+                    <!-- Price & Bids -->
+                    <div class="card listing-sidebar no-border">
+                        <h5 class="card-header no-border bg-custom text-center">Current Bid</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <h4 class="price text-center">${{ listing.get_current_bid }}</h4> 
+                            </li>
+                            <li class="list-group-item pt-3">
+                                {% if messages %}
+                                <div class="alert alert-warning text-center" role="alert">
+                                    {% for message in messages %}
+                                        {{ message }}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                <form action="{% url 'listing-bid' listing.id %}" method="POST" class="form-inline">
+                                    {% csrf_token %}
+                                    {% crispy bid-form %}
+                                </form>
+                                <small class="px-3 text-muted">Bid must be at least ${{ listing.get_current_bid }}</small>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                    <!-- Close Auction -->
+                    {% if user == listing.seller %}
+                        <div class="my-3 text-center">
+                            <form action="{% url 'listing-close' listing.id %}">
+                                <button type="submit" class="btn btn-danger btn-block btn-rounded">Close Auction</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Add to Watchlist -->
+                    <div class="mt-3">
+                        {% if user != listing.seller %}
+                            {% if not is_watchlist %}
+                                <a href="{% url 'watchlist-add' listing.id %}">
+                                    <button type="button" class="btn btn-custom btn-block btn-rounded">Add to Watchlist</button>
+                                </a>
+                            {% else %}
+                                <a href="{% url 'watchlist-remove' listing.id %}">
+                                    <button type="button" class="btn btn-outline-custom btn-block btn-rounded">Remove from Watchlist</button>
+                                </a>
+                            {% endif %}
+                        {% endif%}
+                    </div>
+
+
+                {% else %}
+
+                    <!-- If Auction is Closed -->
+                    {% if listing.get_winner %}
+                        {% if listing.get_winner == user %}
+                        <div class="alert alert-primary" role="alert">
+                            <h4 class="alert-heading">Congratulations, {{ user.username }}!</h4>
+                            <hr>
+                            <p>You won this auction for <b>${{ listing.get_current_bid }}</b>.</p>
+                        </div>
+                        {% else %}
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">This auction is closed!</h4>
+                                <hr>
+                                <p>Sold for <b>${{ listing.get_current_bid }}</b>.</p>
+                            </div>
+                        {% endif %}
+
+                    {% else %}
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">This auction is closed.</h4>
+                    </div>                        
+                    {% endif %}
+
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+
 {% endblock body %}

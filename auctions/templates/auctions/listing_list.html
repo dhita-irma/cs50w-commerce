@@ -1,28 +1,61 @@
-{% extends "auctions/layout-listing.html" %}
+{% extends "auctions/layout.html" %}
 {% load static %}
 
+{% block title %}
+    {{ title }}
+{% endblock title %}
+
+
 {% block body %}
-<div class="container-fluid padding">
-    <div class="row padding">
-        <div class="row col-12">
-            {% for listing in listings  %}
-            <div class="col-sm-12 col-md-6 col-lg-3">
-                <div class="card-deck">
-                    <div class="card">
-                        <a href="{% url 'listing-detail' listing.id %}" class="stretched-link">
-                            <img src="{{ listing.image_url }}" class="card-img-top" alt="Image"></a>
+<div class="container-fluid main">
+    
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="sidebar col-lg-3">
+            {% include 'auctions/sidebar.html' %}
+        </div>
+    
+        <!-- Listings -->
+        <div class="col-lg-9 bg-white shadow-sm">
+            <h2 class="text-center py-3">{{ title }}</h2>
+            
+            <!-- Cards -->
+            <div class="row">
+
+                {% for listing in listings %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card no-border h-100">
+                        <a href="{% url 'listing-detail' listing.id %}">
+                            <img class="card-img-top" src="{{ listing.image_url }}" alt="">
+                        </a>
                         <div class="card-body">
-                            <h5 class="card-title">{{ listing.title }}</h5>
-                            <p class="card-text">{{ listing.description }}</p>
-                            <div class="card-text"><small class="text-muted">Created on {{ listing.created_date }}</small></div>
-                            <div class="card-text"><small class="text-muted">By {{ listing.seller }}</small></div>
+                            <h5 class="card-title">
+                                <a href="{% url 'listing-detail' listing.id %}">{{ listing.title }}</a>
+                            </h5>
+                            <h5>${{ listing.get_current_bid }}</h5>
+                            <p class="card-text card-desc">{{ listing.description }}
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            {% if listing.is_active %}
+                                <small class="text-muted">By {{ listing.seller }} | {{ listing.created_date | date:"F d, Y" }}  </small>
+                            {% else %}
+                                <div class="text-center" style="color: red;">CLOSED</div>                                
+                            {% endif %}
                         </div>
                     </div>
                 </div>
+                {% endfor %}
+            
+                
+            
             </div>
-            {% endfor %}
-        </div>
-    </div>
-</div>
+            <!-- /.row -->
     
-{% endblock %}
+        </div>
+          <!-- /.col-lg-9 -->
+
+    </div>
+</div>     
+{% endblock body %}
+

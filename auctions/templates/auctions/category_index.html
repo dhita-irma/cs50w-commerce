@@ -1,11 +1,13 @@
-{% extends 'auctions/layout-listing.html' %}
+{% extends "auctions/layout.html" %}
 {% load crispy_forms_tags %}
 
 {% block body %}
-    <h1>Categories</h1>
-    <ol>
-        {% for category in categories %}
-            <li><a href="{% url 'category-list' category.name %}">{{ category.name }}</a></li>
-        {% endfor %}
-    </ol>
+    <div class="container main" style="padding-bottom: 450px;">
+        <h1>Categories</h1>
+        <ol>
+            {% for category in categories %}
+                <li><a href="{% url 'category-list' category.name %}">{{ category.name }}</a></li>
+            {% endfor %}
+        </ol>
+    </div>
 {% endblock body %}

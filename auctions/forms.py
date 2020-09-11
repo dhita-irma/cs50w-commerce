@@ -16,10 +16,9 @@ class ListingForm(forms.ModelForm):
                 Field('title', placeholder='Enter Listing Title', autocomplete='off'),
                 Field('description', placeholder='Listing Description'),
                 Field('start_price', placeholder='Set Starting Price', autocomplete='off'),
-                Field('image_url', placeholder='Enter Image URL'),
+                Field('image_url', placeholder='Enter Image URL', autocomplete='off'),
                 Field('category', placeholder='Select Category'),
                 Submit('submit', 'Save Listing', css_class='btn btn-primary float-left'),
-                css_class='form-group col-sm-12 col-lg-8 offset-lg-2'
             )
         )
 
@@ -42,11 +41,12 @@ class CommentForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
-                Field('body', placeholder='Enter your comment here'),
+                Field('body', placeholder='Enter your comment here', row="3"),
                 Submit('submit', 'Send', css_class='btn btn-primary float-left'),
-                css_class='form-group col-sm-12 col-lg-12'
+                css_class='form-group comment-form'
             )
         )
+        self.fields['body'].widget.attrs['rows'] = 4
     
     class Meta:
         model = Comment
@@ -57,17 +57,19 @@ class CommentForm(forms.ModelForm):
             'body': _('Comment'),
         }
 
+
 class BidForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
-                Field('price', css_class='form-group mx-sm-3 mb-2'),
-                Submit('submit', 'Place Bid', css_class='btn btn-primary float-left mb-2'),
-                css_class='form-inline'
+            Field('price', css_class='mx-sm-3 mb-2'),
+            Submit('submit', 'Place Bid', css_class='mb-2'),
+            css_class="form-group bidform"
             )
         )
+        self.helper.form_show_labels = False
     
     class Meta:
         model = Bid
