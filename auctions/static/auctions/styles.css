@@ -8,6 +8,15 @@
     --hover-color: #90c1f1;
 }
 
+body {
+    background-color: #FAF8F8;
+
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+
 /* Navigation Bar */
 .bg-custom {
     background-color: var(--primary-color);
@@ -28,10 +37,6 @@ nav .btn-custom {
     padding-bottom: 3px;
 }
 
-/* Footer */
-.bg-footer {
-    background-color: var(--footer-color);
-}
 
 /* Carousel */
 .carousel-caption {
@@ -113,9 +118,7 @@ nav .btn-custom {
 /* --------- */
 
 
-body {
-    background-color: #FAF8F8;
-}
+
 
 .bg-white {
     background-color: white;
@@ -146,6 +149,7 @@ body {
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
 }
+
 
 .listing-sidebar .card-header {
     padding-top: 6px;
@@ -206,18 +210,10 @@ footer {
     background-color: lightgray;
     color: black;
     padding-top: 10px;
-  }
-  
-  footer h4 {
-    color: black;
-  }
-  
-  footer .light {
-    border-top: 1px solid darkgray;
-    width: 75%;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
+
+    margin-top: auto;
+}
+
 
 @media(max-width:768px) {
     .sidebar {

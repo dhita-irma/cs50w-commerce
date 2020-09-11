@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -7,13 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from django.views.generic import(
-    CreateView,
-    DeleteView,
-    DetailView, 
-    ListView, 
-    UpdateView,
-)
+from django.views.generic import CreateView
 
 from . import forms
 from .models import *
@@ -41,7 +36,6 @@ class ListingCreateView(LoginRequiredMixin, CreateView):
     model = Listing
     form_class = forms.ListingForm
     login_url = '/login/'
-    # TODO: redirect user back to /listing/new/ after login
 
     # Set listing's seller to current logged-in user 
     def form_valid(self, form):
@@ -84,9 +78,11 @@ def listing_bid(request, pk):
                 if price > listing.get_current_bid():
                     bid = Bid(listing=listing, user=request.user, price=price)
                     bid.save()
+                    messages.add_message(request, messages.INFO, "Bid succesfully placed.")
                     return redirect(reverse('listing-detail', args=[pk]))
                 else:
-                    return HttpResponse("Invalid price.")
+                    messages.add_message(request, messages.INFO, "Oops. Bid can't be lower than the current bid.")
+                    return redirect(reverse('listing-detail', args=[pk]))
     else: 
         return render(request, 'auctions/error.html')
 
@@ -165,11 +161,6 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
-def category_index(request):
-    categories = Category.objects.all()
-    return render(request, "auctions/category_index.html", {
-        "categories": categories
-    })
 
 def category_list(request, category):
     try:

@@ -88,6 +88,13 @@
                                 <h4 class="price text-center">${{ listing.get_current_bid }}</h4> 
                             </li>
                             <li class="list-group-item pt-3">
+                                {% if messages %}
+                                <div class="alert alert-warning text-center" role="alert">
+                                    {% for message in messages %}
+                                        {{ message }}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
                                 <form action="{% url 'listing-bid' listing.id %}" method="POST" class="form-inline">
                                     {% csrf_token %}
                                     {% crispy bid-form %}
@@ -113,7 +120,7 @@
                             {% if not is_watchlist %}
                                 <a href="{% url 'watchlist-add' listing.id %}">
                                     <button type="button" class="btn btn-custom btn-block btn-rounded">Add to Watchlist</button>
-                                </a>z
+                                </a>
                             {% else %}
                                 <a href="{% url 'watchlist-remove' listing.id %}">
                                     <button type="button" class="btn btn-outline-custom btn-block btn-rounded">Remove from Watchlist</button>
