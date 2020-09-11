@@ -37,6 +37,8 @@
                             {{ user.username }}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="{% url 'my-listings' %}">My Listings</a>
+                            <a class="dropdown-item" href="{% url 'watchlist' %}">My Watchlist</a>
                             <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                         </div>
                     </li>

@@ -24,7 +24,7 @@
         </div>
     
         <!-- Listings -->
-        <div class="col-lg-9">
+        <div class="col-lg-9 bg-white shadow-sm pb-3">
 
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
@@ -65,11 +65,10 @@
                 </a>
               </div>
 
-            <h2 class="text-center py-3">Recent Listings</h2>
-            
-            <!-- Cards -->
-            <div class="row">
-
+              
+              <!-- Cards -->
+              <h2 class="text-center py-3">Recent Listings</h2>
+              <div class="row">
                 {% for listing in listings %}
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card no-border h-100 ">
@@ -79,11 +78,11 @@
                                 <a href="{% url 'listing-detail' listing.id %}">{{ listing.title }}</a>
                             </h4>
                             <h5>${{ listing.get_current_bid }}</h5>
-                            <p class="card-text">{{ listing.description }}
+                            <p class="card-text card-desc">{{ listing.description }}
                             </p>
                         </div>
                         <div class="card-footer">
-                            <small class="text-muted">By {{ listing.seller }} on {{ listing.created_date }}</small>
+                            <small class="text-muted">By {{ listing.seller }} | {{ listing.created_date | date:"F d, Y" }}</small>
                         </div>
                     </div>
                 </div>

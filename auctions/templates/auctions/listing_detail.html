@@ -9,17 +9,17 @@
 {% block body %}
 
     <!-- Page Content -->
-    <div class="container" style="background-color: white;">
-        <div class="row">
+    <div class="container bg-white">
+        <div class="row" style="padding-bottom: 50px;">
             <!-- Listing Column -->
             <div class="col-lg-8">
 
                 <!-- Listing Information -->
                 <h1 class="text-center mt-4">{{ listing.title }}</h1>
 
-                <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="img-fluid img-thumbnail rounded mx-auto d-block mt-3">
+                <img src="{{ listing.image_url }}" alt="{{ listing.title }}" class="img-fluid mx-auto d-block mt-3">
                 
-                <p class="mt-4">{{ listing.description }}</p>
+                <p class="desc mt-4">{{ listing.description }}</p>
                 <p class="mt-4">Starting price: ${{ listing.start_price }}</p>
                 
                 <hr>
@@ -128,25 +128,23 @@
                     <!-- If Auction is Closed -->
                     {% if listing.get_winner %}
                         {% if listing.get_winner == user %}
-                            <div class="card mt-6">
-                                <div class="card-header bg-custom text-center ">
-                                    <b>This auction is closed</b>
-                                </div>
-                                <div class="card-body">
-                                    <h6>Congratulations, {{ user }}. You won this auction!</h6>
-                                    <h5>Sold for: <span class="price">${{ listing.get_current_bid }}</span></h5>
-                                </div>
+                        <div class="alert alert-primary" role="alert">
+                            <h4 class="alert-heading">Congratulations, {{ user.username }}!</h4>
+                            <hr>
+                            <p>You won this auction for <b>${{ listing.get_current_bid }}</b>.</p>
+                        </div>
+                        {% else %}
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">This auction is closed!</h4>
+                                <hr>
+                                <p>Sold for <b>${{ listing.get_current_bid }}</b>.</p>
                             </div>
                         {% endif %}
+
                     {% else %}
-                        <div class="card mt-6">
-                            <div class="card-header">
-                                This listing is closed.
-                            </div>
-                            <div class="card-body">
-                                Sold for: ${{ listing.get_current_bid }}
-                            </div>
-                        </div>                        
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">This auction is closed.</h4>
+                    </div>                        
                     {% endif %}
 
                 {% endif %}

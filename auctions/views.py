@@ -25,13 +25,11 @@ def index(request):
 
     return render(request, 'auctions/index.html', {
         "user": request.user,
-        "categories_1": categories[:4],
-        "categories_2": categories[4:8],
-        "listings":listings[:4]
+        "listings":listings[:6]
     })
 
 def active_listing(request):
-    listings = Listing.objects.filter(is_active=True)
+    listings = Listing.objects.filter(is_active=True).order_by('-created_date')
 
     return render(request, 'auctions/listing_list.html', {
         "listings": listings,

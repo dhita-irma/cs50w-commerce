@@ -4,13 +4,13 @@
     /* --primary-color: #5bc0de; */
     --primary-color: #439efa;
     --secondary-color: #439efa;
+    --footer-color: lightgray;
     --hover-color: #90c1f1;
 }
 
 /* Navigation Bar */
 .bg-custom {
     background-color: var(--primary-color);
-    border-bottom-width: 3px;
 }
 
 .navbar-nav {
@@ -26,6 +26,11 @@
 nav .btn-custom {
     padding-top: 1px;
     padding-bottom: 3px;
+}
+
+/* Footer */
+.bg-footer {
+    background-color: var(--footer-color);
 }
 
 /* Carousel */
@@ -131,6 +136,17 @@ body {
     background-color: white;
 }
 
+.desc {
+    white-space: pre-wrap;
+}
+
+.card-desc {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
 .listing-sidebar .card-header {
     padding-top: 6px;
     padding-bottom: 8px;
@@ -146,9 +162,13 @@ body {
     width: 400px;
 }
 
+.btn-width-sm {
+    width: 200px;
+}
+
 .main {
     padding-top: 50px;
-    padding-bottom: 200px;
+    padding-bottom: 50px;
 }
 
 /* Comments */

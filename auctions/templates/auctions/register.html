@@ -4,7 +4,7 @@
 
     <div class="container-fluid main bg-white" style="padding-bottom: 450px;">
         <div class="row">
-            <div class="col-md-8 offset-md-2 mt-6">
+            <div class="col-md-6 offset-md-3 mt-4">
                 <h2 class="text-center mb-4">Register</h2>
 
                 {% if message %}
@@ -25,11 +25,15 @@
                     <div class="form-group">
                         <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password" autocomplete="off">
                     </div>
-                    <input class="btn btn-primary" type="submit" value="Register">
+                    <div class="text-center">
+                        <input class="btn btn-custom btn-rounded btn-width-sm" type="submit" value="Register">
+                    </div>
                 </form>
                 
                 <br>
-                Already have an account? <a href="{% url 'login' %}">Log In here.</a>
+                <div class="text-center">
+                    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
+                </div>
             </div>
         </div>
     </div>
