@@ -46,6 +46,7 @@ class ListingCreateView(LoginRequiredMixin, CreateView):
 def listing_detail(request, pk):
     listing = Listing.objects.get(pk=pk)
     listing_categories = listing.category.all()
+    bids = Bid.objects.filter(listing=pk).order_by('-time') 
 
     user = request.user
 
@@ -62,7 +63,8 @@ def listing_detail(request, pk):
         'is_watchlist': is_watchlist,
         'listing': listing,
         'listing_categories': listing_categories,
-        'user': user
+        'user': user,
+        'bids': bids
     })
 
 
@@ -81,7 +83,7 @@ def listing_bid(request, pk):
                     messages.success(request, 'Bid successfully added.')
                     return redirect(reverse('listing-detail', args=[pk]))
                 else:
-                    messages.error(request, "Oops. Your bid can't be lower than the current one.")
+                    messages.error(request, "Oops. Your bid has to be higher than the current one.")
                     return redirect(reverse('listing-detail', args=[pk]))
     else: 
         return render(request, 'auctions/error.html')
@@ -165,7 +167,7 @@ def register(request):
 def category_list(request, category):
     try:
         category = Category.objects.get(name=category)
-        filtered_listings = Listing.objects.filter(category=category.id)
+        filtered_listings = Listing.objects.filter(category=category.id).order_by('-created_date')
         return render(request, "auctions/listing_list.html", {
             "title": category,
             "listings": filtered_listings,

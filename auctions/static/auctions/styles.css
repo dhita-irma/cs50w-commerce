@@ -167,6 +167,18 @@ nav .btn-custom {
     color: green;
 }
 
+th, td {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.btn-link {
+    height: 25px;
+    color: white;
+    font-size: 17px;
+    font-weight: 500;
+}
+
 .btn-width {
     width: 400px;
 }

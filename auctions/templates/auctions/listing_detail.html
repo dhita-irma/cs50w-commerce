@@ -112,6 +112,32 @@
                         </ul>
                     </div>
 
+                    <!-- Collapsible Bid List -->
+                    <div id="accordion">
+                        <div class="card listing-sidebar no-border">
+                            <div class="card-header no-border bg-custom text-center pb-2" id="headingOne">
+                                <button class="btn btn-link text-center py-0" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false"
+                                    aria-controls="collapseOne">
+                                    View All Bids
+                                </button>
+                            </div>
+                    
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                <div class="card-body text-center">
+                                    <table>
+                                        {% for bid in bids %}
+                                            <tr>
+                                                <td><small>{{ bid.user }}</small></td>
+                                                <td><small>{{ bid.time }}</small></td>
+                                                <td><small>${{ bid.price }}</small></td>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
                     <!-- Close Auction -->
                     {% if user == listing.seller %}
