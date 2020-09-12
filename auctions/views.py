@@ -64,7 +64,8 @@ def listing_detail(request, pk):
         'listing': listing,
         'listing_categories': listing_categories,
         'user': user,
-        'bids': bids
+        'bids': bids,
+        'bids_len': len(bids)
     })
 
 
