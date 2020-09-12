@@ -9,7 +9,7 @@
 {% block body %}
 
     <!-- Page Content -->
-    <div class="container bg-white">
+    <div class="container-fluid bg-white">
         <div class="row" style="padding-bottom: 50px;">
             <!-- Listing Column -->
             <div class="col-lg-8">
@@ -68,9 +68,9 @@
 
                 <!-- Alert -->
                 {% if not user.is_authenticated %}
-                    <div class="alert alert-primary mt-6" role="alert">
+                    <div class="alert alert-primary mt-6 text-center" role="alert">
                         Want to make a bid? <br>
-                        <strong><a href="{% url 'login' %}">Sign In</a></strong> or 
+                        <strong><a href="{% url 'login' %}">Log In</a></strong> or 
                         <strong><a href="{% url 'register' %}">Create Account</a></strong>
                     </div>
                 {% else %}
