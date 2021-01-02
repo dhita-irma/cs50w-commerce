@@ -146,7 +146,8 @@
                     <!-- Close Auction -->
                     {% if user == listing.seller %}
                         <div class="my-3 text-center">
-                            <form action="{% url 'listing-close' listing.id %}">
+                            <form action="{% url 'listing-close' listing.id %}" method="POST">
+                                {% csrf_token %}
                                 <button type="submit" class="btn btn-danger btn-block btn-rounded">Close Auction</button>
                             </form>
                         </div>

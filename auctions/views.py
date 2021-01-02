@@ -78,8 +78,9 @@ def listing_detail(request, pk):
 
 
 def listing_bid(request, pk):
-    """On POST: Save new valid bids to the Bid model in the database"""
+    """Save new bids made by user to the Bid model in the database"""
 
+    # Request has to be made via POST 
     if request.method == "POST":
         # If user is not logged in, redirect to login page
         if not request.user.is_authenticated:
@@ -104,26 +105,99 @@ def listing_bid(request, pk):
 
 
 def listing_close(request, pk):
-    listing = Listing.objects.get(pk=pk)        
-    listing.is_active = False
-    listing.save()
-    return redirect(reverse('index'))
+    """Close auction"""
+    
+    # Query requested listing
+    listing = Listing.objects.get(pk=pk) 
+
+    # Request has to be made via POST by user who owns the listing
+    if request.method == 'POST' and request.user.username == listing.seller.username:
+        listing.is_active = False
+        listing.save()
+        return redirect(reverse('index'))
+    else: 
+        return render(request, 'auctions/error.html')
+
 
 def listing_comment(request, pk):
+    """Post comment to a listing item"""
+
     if request.method == "POST":
         if not request.user.is_authenticated:
             return redirect(reverse("login"))
         else:
+            # Populate form object with data from POST request
             form = forms.CommentForm(request.POST)
             if form.is_valid():
+                # Get comment body and query requested listing
                 body = form.cleaned_data['body']
                 listing = Listing.objects.get(pk=pk)
 
+                # Create comment instance and save 
                 comment = Comment(listing=listing, user=request.user, body=body)
                 comment.save()
             return redirect(reverse('listing-detail', args=[pk]))
     else: 
         return render(request, 'auctions/error.html')
+
+
+def category_list(request, category):
+    """Render page to display listings in the requested category"""
+
+    try:
+        # Attempt to query listings with reequested category
+        category = Category.objects.get(name=category)
+        filtered_listings = Listing.objects.filter(category=category.id).order_by('-created_date')
+        return render(request, "auctions/listing_list.html", {
+            "title": category,
+            "listings": filtered_listings,
+        })     
+    except:
+        return render(request, "auctions/error.html")
+
+
+@login_required(login_url='/login/')
+def my_listings(request):
+    """Render page to display listings that belongs to the currently logged in user"""
+
+    my_listings = Listing.objects.filter(seller=request.user)
+    return render(request, "auctions/listing_list.html", {
+        "listings": my_listings,
+        "title": "My Listings"
+    })
+
+
+@login_required(login_url='/login/')
+def watchlist_add(request, pk):
+    """Add a listing to Watchlist"""
+
+    user = request.user
+    listing = Listing.objects.get(pk=pk)
+    user.watchlist.add(listing)
+    user.save()
+
+    listings = Listing.objects.filter(added_by=request.user.id)
+    return redirect(reverse('listing-detail', args=[pk]))
+
+
+@login_required(login_url='/login/')
+def watchlist_remove(request, pk):
+    """Remove a listing from Watchlist"""
+    
+    user = request.user
+    user.watchlist.remove(pk)
+    return redirect(reverse('listing-detail', args=[pk]))
+
+
+@login_required(login_url='/login/')
+def watchlist_view(request):
+    """Render page to display listings in Watchlist of currently logged in user"""
+
+    watchlist = Listing.objects.filter(added_by=request.user.id)
+    return render(request, "auctions/listing_list.html", {
+        "listings": watchlist,
+        "title": "My Watchlist"
+    })
 
 
 def login_view(request):
@@ -176,47 +250,3 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
-
-
-def category_list(request, category):
-    try:
-        category = Category.objects.get(name=category)
-        filtered_listings = Listing.objects.filter(category=category.id).order_by('-created_date')
-        return render(request, "auctions/listing_list.html", {
-            "title": category,
-            "listings": filtered_listings,
-        })     
-    except:
-        return render(request, "auctions/error.html")
-
-@login_required(login_url='/login/')
-def my_listings(request):
-    my_listings = Listing.objects.filter(seller=request.user)
-    return render(request, "auctions/listing_list.html", {
-        "listings": my_listings,
-        "title": "My Listings"
-    })
-
-
-@login_required(login_url='/login/')
-def watchlist_view(request):
-    watchlist = Listing.objects.filter(added_by=request.user.id)
-    return render(request, "auctions/listing_list.html", {
-        "listings": watchlist,
-        "title": "My Watchlist"
-    })
-
-@login_required(login_url='/login/')
-def watchlist_add(request, pk):
-    user = request.user
-    listing = Listing.objects.get(pk=pk)
-    user.watchlist.add(listing)
-    user.save()
-
-    listings = Listing.objects.filter(added_by=request.user.id)
-    return redirect(reverse('listing-detail', args=[pk]))
-
-def watchlist_remove(request, pk):
-    user = request.user
-    user.watchlist.remove(pk)
-    return redirect(reverse('listing-detail', args=[pk]))
