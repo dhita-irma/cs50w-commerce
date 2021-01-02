@@ -15,6 +15,8 @@ from .models import *
 
 
 def index(request):
+    """Render and display the last 6 listings on the homepage."""
+
     categories = Category.objects.all()
     listings = Listing.objects.order_by('-created_date').all()
 
@@ -24,6 +26,8 @@ def index(request):
     })
 
 def active_listing(request):
+    """Render page to display currently active listings, sorted from latest to oldest."""
+
     listings = Listing.objects.filter(is_active=True).order_by('-created_date')
 
     return render(request, 'auctions/listing_list.html', {
@@ -33,6 +37,8 @@ def active_listing(request):
 
 
 class ListingCreateView(LoginRequiredMixin, CreateView):
+    """Generic display view to render Create Listing page"""
+
     model = Listing
     form_class = forms.ListingForm
     login_url = '/login/'
@@ -44,6 +50,8 @@ class ListingCreateView(LoginRequiredMixin, CreateView):
 
 
 def listing_detail(request, pk):
+    """Render page to display listing details"""
+
     listing = Listing.objects.get(pk=pk)
     listing_categories = listing.category.all()
     bids = Bid.objects.filter(listing=pk).order_by('-time') 
@@ -70,14 +78,19 @@ def listing_detail(request, pk):
 
 
 def listing_bid(request, pk):
+    """On POST: Save new valid bids to the Bid model in the database"""
+
     if request.method == "POST":
+        # If user is not logged in, redirect to login page
         if not request.user.is_authenticated:
             return redirect(reverse("login"))
         else:
+            # Get and validate form data
             form = forms.BidForm(request.POST)
             if form.is_valid():
                 price = form.cleaned_data['price']
                 listing = Listing.objects.get(pk=pk)
+                # Only accept bid if it's higher than current price, otherwise show error message
                 if price > listing.get_current_bid():
                     bid = Bid(listing=listing, user=request.user, price=price)
                     bid.save()
@@ -91,10 +104,10 @@ def listing_bid(request, pk):
 
 
 def listing_close(request, pk):
-     listing = Listing.objects.get(pk=pk)        
-     listing.is_active = False
-     listing.save()
-     return redirect(reverse('index'))
+    listing = Listing.objects.get(pk=pk)        
+    listing.is_active = False
+    listing.save()
+    return redirect(reverse('index'))
 
 def listing_comment(request, pk):
     if request.method == "POST":

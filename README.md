@@ -1,5 +1,5 @@
 # Commerce
-Simple auction website built with Django 
+Simple auction website built with Django 3.1 
 
 ## Table of Contents
 - [Project Summary](#project-summary)
